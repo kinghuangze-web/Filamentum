@@ -17,7 +17,7 @@ export class LocalVaultService {
     // 连接到本地文件夹
     async connect(): Promise<boolean> {
         try {
-            this.dirHandle = await window.showDirectoryPicker({
+            this.dirHandle = await (window as any).showDirectoryPicker({
                 mode: 'readwrite',
                 startIn: 'documents'
             });
