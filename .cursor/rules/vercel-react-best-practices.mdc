@@ -1,0 +1,56 @@
+---
+description: Apply Vercel React Best Practices for Performance, Style, and Optimization
+globs: **/*.tsx, **/*.ts, **/*.jsx, **/*.js
+---
+# Vercel React Best Practices
+
+You MUST follow these Vercel-recommended best practices when writing React and Next.js code.
+
+## ⚡ Performance Optimization
+
+### Rendering & Memoization
+- **Minimize Re-renders**: Use `React.memo` for components that receive props that rarely change.
+- **Memoize Expensive Calculations**: Use `useMemo` for computationally expensive operations to avoid recalculation on every render.
+- **Stable Callbacks**: Use `useCallback` for functions passed as props to memoized child components to preserve referential identity.
+- **Avoid Inline Functions**: Define functions outside the component or use `useCallback` instead of passing inline arrow functions in JSX (`onClick={() => ...}`) for complex components.
+
+### Data Fetching
+- **Server-Side Data**: Prefer Server Components (RSC) or `getServerSideProps` / `getStaticProps` (legacy) over client-side `useEffect` fetching where possible to reduce waterfalls.
+- **SWR / TanStack Query**: If client-side fetching is necessary, use libraries like `swr` or `@tanstack/react-query` for caching, revalidation, and deduplication.
+- **Parallel Fetching**: Avoid sequential `await` calls. Use `Promise.all` to fetch data in parallel.
+
+### Assets & Bundling
+- **Image Optimization**: MANDATORY. Always use `next/image` (`<Image />`) instead of `<img>`. Specify `width` and `height` or `fill` to prevent layout shifts.
+- **Lazy Loading**: Use `next/dynamic` or `React.lazy` / `Suspense` for heavy components, modals, or routes to split code bundles.
+- **Font Optimization**: Use `next/font` to automatically optimize and host fonts.
+
+## 📐 Code Style & Structure
+
+### Naming Conventions
+- **Components**: Use `PascalCase` for component filenames and function names (e.g., `Button.tsx`, `function Button()`).
+- **Directories**: Use `kebab-case` or `lowercase` for directory names (e.g., `components/ui`, `lib/utils`).
+- **Exports**: Prefer **Named Exports** (`export function Button...`) over Default Exports to improve refactoring and tree-shaking.
+
+### TypeScript Usage
+- **Interfaces over Types**: Use `interface` for defining Component Props and public contracts.
+- **Strict Typing**: Avoid `any`. Define precise types for all props and state.
+- **Functional Components**: Use pure functional components. Avoid Class components.
+
+## 🛠 Next.js Specifics
+
+- **Routing**: Use the App Router (`app/`) directory structure for new features unless maintaining legacy Pages Router code.
+- **Server Actions**: Use Server Actions for form submissions and mutations instead of manual API routes where appropriate.
+- **Metadata**: Use the Metadata API for SEO tags instead of `<Head>`.
+
+## 🎨 UI & Styling
+
+- **Tailwind CSS**: Prefer Tailwind CSS utility classes over CSS-in-JS or separate CSS files for better performance and smaller bundle sizes (if Tailwind is configured).
+- **ClassName Merging**: Use `clsx` or `tailwind-merge` (`cn` utility) to construct dynamic class names safely.
+- **Compound Components**: Build reusable UI components using the Compound Component pattern where logical.
+
+## 🚨 Anti-Patterns (Avoid These)
+
+- ❌ **Waterfalls**: Nested fetching where a child component waits for a parent to finish fetching before starting its own.
+- ❌ **Prop Drilling**: Passing props through multiple layers of components. Use Context or Composition instead.
+- ❌ **Huge Bundles**: Importing entire heavy libraries (like `lodash` or `moment`) when only a single function is needed.
+- ❌ **Unstable Keys**: Using array index as `key` in lists (`map((item, index) => ...)`). Always use unique IDs.

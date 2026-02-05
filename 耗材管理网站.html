@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FilamentFlow - V9.2 稳定修复版</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script crossorigin src="https://unpkg.com/react@18.2.0/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] },
+                    colors: {
+                        dark: { 900: '#0f172a', 800: '#1e293b', 700: '#334155' },
+                        brand: { 500: '#10b981', 600: '#059669' },
+                        accent: { 500: '#3b82f6' }
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',
+                        'card': '0 0 0 1px rgba(0,0,0,0.03), 0 2px 8px rgba(0,0,0,0.04)'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #f8fafc; color: #334155; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .fade-in { animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .stat-card { background: white; border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); position: relative; overflow: hidden; border: 1px solid #f1f5f9; }
+        .stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; }
+        .stat-card.teal::before { background: #2dd4bf; }
+        .stat-card.orange::before { background: #fbbf24; }
+        .stat-card.blue::before { background: #38bdf8; }
+
+        .spool-ring { transition: stroke-dashoffset 0.8s ease-in-out; transform: rotate(-90deg); transform-origin: 50% 50%; }
+        
+        .brand-tag { transition: all 0.2s; border: 1px solid transparent; }
+        .brand-tag.active { background-color: #0f172a; color: white; border-color: #0f172a; }
+        .brand-tag:hover:not(.active) { background-color: #e2e8f0; border-color: #cbd5e1; }
+        
+        .plate-tab-active { background-color: #0f172a; color: white; }
+        .plate-tab-inactive { background-color: white; color: #64748b; border: 1px solid #e2e8f0; }
+        .plate-tab-inactive:hover { border-color: #cbd5e1; background-color: #f8fafc; }
+
+        /* 紧急重置按钮样式 */
+        #emergency-reset {
+            position: fixed; top: 10px; right: 10px; z-index: 9999;
+            background: #ef4444; color: white; padding: 8px 12px;
+            border-radius: 6px; font-size: 12px; font-family: sans-serif;
+            cursor: pointer; border: 2px solid white; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            opacity: 0.8; transition: opacity 0.2s;
+        }
+        #emergency-reset:hover { opacity: 1; }
+    </style>
+</head>
+<body>
+    <!-- 紧急救援按钮：不依赖React，直接操作DOM -->
+    <button id="emergency-reset" onclick="clearAppData()">⚠️ 遇到问题？点击清除旧数据并重置</button>
+    
+    <div id="root"></div>
+
+    <script>
+        // 独立的清除数据函数
+        function clearAppData() {
+            if(confirm("【警告】\n这将清除本网页所有保存在浏览器缓存中的 '耗材库存' 和 '预设' 数据。\n\n如果您之前没有备份导出过 .json 文件，数据将无法恢复。\n\n是否确认清除并重置？")) {
+                localStorage.removeItem('filamentFlowData');
+                localStorage.removeItem('filamentFlowPresets');
+                alert("数据已清除，页面即将刷新。");
+                window.location.reload();
+            }
+        }
+        // 如果React加载成功，稍后隐藏这个按钮（可选，这里保留以便随时可用）
+    </script>
+
+    <script type="text/babel">
+        const { useState, useEffect, useMemo } = React;
+
+        // --- 1. 修复后的图标组件 ---
+        // 关键修复：确保 d 属性正确传递，且 PathData 变量名一致
+        const Icon = ({ d, size = 20, className = "" }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+                {d}
+            </svg>
+        );
+
+        // 关键修复：变量名改为 Paths 以匹配调用
+        const Paths = {
+            Logo: <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>,
+            Printer: <><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/><rect x="6" y="14" width="12" height="8" rx="1"/></>,
+            Save: <><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></>,
+            Folder: <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>,
+            Plus: <><path d="M5 12h14"/><path d="M12 5v14"/></>,
+            Search: <><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></>,
+            Trash: <><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></>,
+            Edit: <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>,
+            X: <><path d="M18 6 6 18"/><path d="m6 6 12 12"/></>,
+            Check: <polyline points="20 6 9 17 4 12"/>,
+            Palette: <><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.109 0-1.422 1.153-2.575 2.575-2.575H18c2.2 0 4-1.8 4-4 0-4.4-3.6-8-8-8z"/></>,
+            Coins: <><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/></>,
+            Thermometer: <path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/>,
+            Waves: <><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/></>,
+            Upload: <><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></>,
+            Sparkles: <><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M9 5H5"/><path d="M19 18v4"/><path d="M15 20h4"/></>,
+            Camera: <><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></>,
+            History: <><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></>,
+            Package: <><path d="M16.5 9.4 7.55 4.24"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.29 7 12 12 20.71 7"/><line x1="12" y1="22" x2="12" y2="12"/></>,
+            ExternalLink: <><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></>,
+            ImageIcon: <><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></>,
+            TrendingDown: <><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></>,
+            ThermometerSun: <><path d="M12 9a4 4 0 0 0-2 7.5M12 3v2M6.6 5 8 6.4M16 6.4 17.4 5M21 12h-2M17.4 19 16 17.6M8 17.6 6.6 19M3 12h2M12 12m-9 0a9 9 0 1 1 18 0 9 9 0 0 1-18 0z"/></>,
+            Zap: <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>,
+            FileSave: <><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></>,
+            FolderOpen: <path d="m6 14 1.45-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.55 6a2 2 0 0 1-1.94 1.5H4a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2h3.93a2 2 0 0 1 1.66.9l.82 1.2a2 2 0 0 0 1.66.9H18a2 2 0 0 1 2 2v2"/>,
+            LayoutDashboard: <><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></>,
+            List: <><line x1="8" x2="21" y1="6" y2="6"/><line x1="8" x2="21" y1="12" y2="12"/><line x1="8" x2="21" y1="18" y2="18"/><line x1="3" x2="3.01" y1="6" y2="6"/><line x1="3" x2="3.01" y1="12" y2="12"/><line x1="3" x2="3.01" y1="18" y2="18"/></>,
+            Tag: <><path d="M12 2H2v10l9.29 9.29c.94.94 2.48.94 3.42 0l6.58-6.58c.94-.94.94-2.48 0-3.42L12 2Z"/><circle cx="7" cy="7" r="2"/></>
+        };
+
+        const PLATE_TYPES = [
+            { id: 'cool_stabilized', label: '增稳低温' }, { id: 'cool', label: '低温板' }, 
+            { id: 'engineering', label: '工程板' }, { id: 'smooth_high_temp', label: '光面/高温' }, 
+            { id: 'textured', label: '纹理PEI' }
+        ];
+        const DEFAULT_BED = { cool_stabilized: { initial: 35, other: 35 }, cool: { initial: 35, other: 35 }, engineering: { initial: 70, other: 70 }, smooth_high_temp: { initial: 70, other: 70 }, textured: { initial: 70, other: 70 } };
+        const BASE_PROFILES = {
+            'PLA Basic': { tempMin: 190, tempMax: 220, flowRatio: 0.98, maxVolumetricSpeed: 12, pressureAdvance: 0.02, bedSettings: { ...DEFAULT_BED, textured: { initial: 65, other: 60 } } },
+            'PLA+': { tempMin: 205, tempMax: 230, flowRatio: 0.98, maxVolumetricSpeed: 15, pressureAdvance: 0.022, bedSettings: { ...DEFAULT_BED, textured: { initial: 65, other: 60 } } },
+            'PETG Basic': { tempMin: 230, tempMax: 250, flowRatio: 0.95, maxVolumetricSpeed: 10, pressureAdvance: 0.04, bedSettings: { ...DEFAULT_BED, textured: { initial: 75, other: 75 } } },
+            'ABS': { tempMin: 240, tempMax: 270, flowRatio: 0.95, maxVolumetricSpeed: 12, pressureAdvance: 0.04, bedSettings: { ...DEFAULT_BED, engineering: { initial: 90, other: 90 } } },
+            'TPU 95A': { tempMin: 210, tempMax: 240, flowRatio: 0.95, maxVolumetricSpeed: 3.5, pressureAdvance: 0.1, bedSettings: { ...DEFAULT_BED, textured: { initial: 45, other: 45 } } },
+        };
+        const TYPE_GROUPS = [{ label: 'PLA 系列', options: ['PLA Basic', 'PLA+', 'PLA Matte', 'PLA Silk', 'PLA CF'] }, { label: 'PETG 系列', options: ['PETG Basic', 'PETG Matte'] }, { label: '工程材料', options: ['ABS', 'ASA', 'PC'] }, { label: '柔性材料', options: ['TPU 95A'] }];
+        const COMMON_COLORS = ['#000000', '#FFFFFF', '#808080', '#FF0000', '#0000FF', '#008000', '#FFFF00', '#FFA500', '#800080', '#FFC0CB', '#A52A2A', '#00FFFF'];
+
+        const compressImage = (file) => new Promise(resolve => {
+            const reader = new FileReader(); reader.readAsDataURL(file);
+            reader.onload = e => {
+                const img = new Image(); img.src = e.target.result;
+                img.onload = () => {
+                    const c = document.createElement('canvas'); const s = Math.min(1, 1024/img.width);
+                    c.width = img.width*s; c.height = img.height*s;
+                    c.getContext('2d').drawImage(img,0,0,c.width,c.height); resolve(c.toDataURL('image/jpeg', 0.7));
+                }
+            }
+        });
+
+        const SpoolRing = ({ percentage, color }) => {
+            const r = 24; const c = 2 * Math.PI * r;
+            return (
+                <div className="relative w-14 h-14 flex items-center justify-center">
+                    <svg className="w-full h-full transform -rotate-90 spool-ring">
+                        <circle cx="28" cy="28" r={r} stroke="#cbd5e1" strokeWidth="5" fill="transparent"/>
+                        <circle cx="28" cy="28" r={r} stroke={color} strokeWidth="5" fill="transparent" strokeDasharray={c} strokeDashoffset={c - (percentage / 100) * c} strokeLinecap="round"/>
+                    </svg>
+                    <div className="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-slate-500">{Math.round(percentage)}%</div>
+                </div>
+            );
+        };
+
+        function FilamentManager() {
+            const [filaments, setFilaments] = useState([]);
+            const [presets, setPresets] = useState([]);
+            const [fileHandle, setFileHandle] = useState(null);
+            const [view, setView] = useState('list');
+            
+            const [modals, setModals] = useState({ edit: false, job: false, detail: false });
+            const [detailId, setDetailId] = useState(null);
+            const [editingId, setEditingId] = useState(null);
+            const [searchTerm, setSearchTerm] = useState('');
+            const [activeBrandFilter, setActiveBrandFilter] = useState(null);
+            const [isParsing, setIsParsing] = useState(false);
+            const [loading, setLoading] = useState(true);
+
+            const initialForm = { id: '', brand: '', type: 'PLA Basic', color: '#000000', colorName: '', weight: 1000, remaining: 1000, price: '', tempMin: 190, tempMax: 220, flowRatio: 0.98, maxVolumetricSpeed: 12, pressureAdvance: 0.02, notes: '', history: [], createdAt: null, bedSettings: JSON.parse(JSON.stringify(DEFAULT_BED)), defaultPlate: 'textured' };
+            const [formData, setFormData] = useState(initialForm);
+            const [activePlateTab, setActivePlateTab] = useState('textured');
+            const [jobForm, setJobForm] = useState({ name: '', link: '', image: '', items: [] });
+            const [historyForm, setHistoryForm] = useState({ name: '', weightUsed: '', link: '', image: '' });
+            const [isAddingHistory, setIsAddingHistory] = useState(false);
+            const [imagePreview, setImagePreview] = useState(null);
+            const [multiColorForm, setMultiColorForm] = useState({ name: '', link: '', image: '', items: [] });
+
+            useEffect(() => {
+                const savedData = localStorage.getItem('filamentFlowData');
+                const savedPresets = localStorage.getItem('filamentFlowPresets');
+                if (savedData) {
+                    try {
+                        let raw = JSON.parse(savedData);
+                        let data = Array.isArray(raw) ? raw : (raw.filaments || []);
+                        data = data.map(f => {
+                            let newBed = JSON.parse(JSON.stringify(DEFAULT_BED));
+                            if (f.bedSettings) { newBed = { ...newBed, ...f.bedSettings }; if(f.bedSettings.high_temp) newBed.smooth_high_temp = f.bedSettings.high_temp; }
+                            else { const i=f.bedInitial||60, o=f.bedOther||60; Object.keys(newBed).forEach(k=>newBed[k]={initial:i, other:o}); }
+                            return { ...f, defaultPlate: f.defaultPlate||'textured', bedSettings: newBed };
+                        });
+                        setFilaments(data);
+                    } catch (e) { console.error(e); }
+                }
+                if (savedPresets) try { setPresets(JSON.parse(savedPresets)); } catch (e) {}
+                setLoading(false);
+            }, []);
+
+            useEffect(() => {
+                if(!loading) {
+                    localStorage.setItem('filamentFlowData', JSON.stringify(filaments));
+                    localStorage.setItem('filamentFlowPresets', JSON.stringify(presets));
+                    if(fileHandle) (async()=>{try{const w=await fileHandle.createWritable();await w.write(JSON.stringify({filaments,presets,version:'9.2'}));await w.close();}catch(e){}})();
+                }
+            }, [filaments, presets, loading, fileHandle]);
+
+            const handleOpenFile = async () => { try{const[h]=await window.showOpenFilePicker({types:[{accept:{'application/json':['.json']}}]});const f=await h.getFile();const d=JSON.parse(await f.text());if(confirm(`加载 "${f.name}"?`)){setFilaments(d.filaments||[]);setPresets(d.presets||[]);setFileHandle(h);}}catch(e){} };
+            const handleSaveFile = async () => { try{const h=await window.showSaveFilePicker({suggestedName:'Filaments.json'});setFileHandle(h);const w=await h.createWritable();await w.write(JSON.stringify({filaments,presets,version:'9.2'}));await w.close();alert('库文件已创建');}catch(e){} };
+            
+            const handleSaveFilament = (e) => { e.preventDefault(); const now = new Date().toISOString(); if(editingId) setFilaments(p=>p.map(f=>f.id===editingId?{...formData, updatedAt:now}:f)); else setFilaments(p=>[...p, {...formData, id:Date.now().toString(), createdAt:now}]); setModals({...modals, edit:false}); };
+            const handleDelete = (id) => { if(confirm('删除此材料？')) { setFilaments(p=>p.filter(f=>f.id!==id)); if(detailId===id) setDetailId(null); } };
+            const handleLoadPreset = (e) => { const p = presets.find(x=>x.id===e.target.value); if(p) setFormData(prev=>({...prev, ...p.data, color: prev.color, colorName: prev.colorName, weight: prev.weight, price: prev.price})); };
+            const handleImage = async (e, setFunc) => { const f=e.target.files[0]; if(!f)return; const url=await compressImage(f); setFunc(p=>({...p, image: url})); };
+            
+            const submitJob = (e) => { e.preventDefault(); const items=jobForm.items.filter(i=>i.id&&i.used>0); if(!items.length)return alert('请添加消耗'); const now=new Date().toISOString(); const newF=filaments.map(f=>{ const u=items.find(i=>i.id===f.id); if(u){ const w=parseFloat(u.used); return {...f, remaining:Math.max(0,f.remaining-w), history:[...(f.history||[]), {id:Date.now()+Math.random(), name:jobForm.name||'创作', weight:w, link:jobForm.link, image:jobForm.image, date:now}]}; } return f; }); setFilaments(newF); setModals({...modals, job:false}); setJobForm({name:'',link:'',image:'',items:[]}); alert('创作已归档'); };
+            const addHistory = (e) => { e.preventDefault(); if(!detailFilament)return; const w=parseInt(historyForm.weightUsed); if(!w)return; const rec={id:Date.now().toString(), name:historyForm.name||'打印', weight:w, link:historyForm.link, image:historyForm.image, date:new Date().toISOString()}; setFilaments(p=>p.map(f=>f.id===detailId?{...f, remaining:Math.max(0,f.remaining-w), history:[...(f.history||[]), rec]}:f)); setIsAddingHistory(false); setHistoryForm({name:'',weightUsed:'',link:'',image:''}); };
+            const deleteHistory = (rid) => { if(confirm('删除记录并回退库存？')) setFilaments(p=>p.map(f=>f.id===detailId?{...f, remaining:f.remaining+(f.history.find(h=>h.id===rid)?.weight||0), history:f.history.filter(h=>h.id!==rid)}:f)); };
+            const handleFileUpload = async (e) => { const file = e.target.files[0]; if(!file)return; setIsParsing(true); try { const JSZip = window.JSZip; const zip = await JSZip.loadAsync(file); const jsonFiles = Object.keys(zip.files).filter(p=>p.endsWith('.json')&&!p.includes('bundle')); if(!jsonFiles.length) throw new Error(); const content = await zip.file(jsonFiles[0]).async("string"); const data = JSON.parse(content); const updates = {}; const nameParts = jsonFiles[0].replace('.json','').split('@'); if(nameParts.length) updates.brand = nameParts[0].trim().split('/').pop().split(' ')[0]; if(data.nozzle_temperature) updates.tempMax = parseInt(data.nozzle_temperature[0]||data.nozzle_temperature); if(data.nozzle_temperature_initial_layer) updates.tempMin = parseInt(data.nozzle_temperature_initial_layer[0]||data.nozzle_temperature_initial_layer); if(data.filament_flow_ratio) updates.flowRatio = parseFloat(data.filament_flow_ratio[0]||data.filament_flow_ratio); if(data.pressure_advance) updates.pressureAdvance = parseFloat(data.pressure_advance[0]||data.pressure_advance); const beds = JSON.parse(JSON.stringify(DEFAULT_BED)); const parseT = (r) => Array.isArray(r) ? parseInt(r[r.length-1]) : parseInt(r); const init = parseT(data.hot_plate_temp_initial_layer||60); const other = parseT(data.hot_plate_temp||60); Object.keys(beds).forEach(k => beds[k] = {initial:init, other:other}); updates.bedSettings = beds; updates.defaultPlate = 'textured'; let type = 'PLA Basic'; const fName = jsonFiles[0].toUpperCase(); if(fName.includes('PETG')) type = 'PETG Basic'; else if(fName.includes('ABS')) type = 'ABS'; const newData = { ...BASE_PROFILES[type], ...updates, type }; setFormData(prev => ({...prev, ...newData})); const pName = `${newData.brand||'未知'} - ${newData.type}`; setPresets(prev => { const i = prev.findIndex(p=>p.name===pName); if(i>=0){const u=[...prev];u[i]={id:Date.now().toString(),name:pName,data:newData};return u;} return [...prev,{id:Date.now().toString(),name:pName,data:newData}]}); alert(`预设 "${pName}" 已提取`); } catch(e){alert("解析失败")} finally{setIsParsing(false);e.target.value='';} };
+
+            // Stats
+            const stats = useMemo(() => ({ w: filaments.reduce((a,c)=>a+c.remaining,0), v: filaments.reduce((a,c)=>a+(c.price/c.weight*c.remaining),0), c: filaments.reduce((a,c)=>a+(c.history?.length||0),0) }), [filaments]);
+            const allBrands = useMemo(() => Array.from(new Set(filaments.map(f => f.brand).filter(Boolean))).sort(), [filaments]);
+            const filtered = filaments.filter(f => {
+                const s = searchTerm.toLowerCase();
+                const matchS = f.brand.toLowerCase().includes(s) || f.type.toLowerCase().includes(s) || f.colorName.toLowerCase().includes(s);
+                return activeBrandFilter ? (matchS && f.brand === activeBrandFilter) : matchS;
+            });
+            const detailFilament = useMemo(() => filaments.find(f => f.id === detailId), [filaments, detailId]);
+
+            // Add Item to Job
+            const handleAddMultiColorRow = () => { setJobForm(prev => ({ ...prev, items: [...prev.items, { id: '', used: '' }] })); };
+            const handleRemoveMultiColorRow = (index) => { setJobForm(prev => ({ ...prev, items: prev.items.filter((_, i) => i !== index) })); };
+            const updateMultiColorRow = (index, field, value) => { const newItems = [...jobForm.items]; newItems[index] = { ...newItems[index], [field]: value }; setJobForm(prev => ({ ...prev, items: newItems })); };
+
+            return (
+                <div className="min-h-screen pb-20">
+                    <header className="bg-dark-900 text-white sticky top-0 z-20 shadow-md">
+                        <div className="max-w-7xl mx-auto px-6 py-4 flex flex-wrap gap-4 justify-between items-center">
+                            <div className="flex items-center gap-3">
+                                <div className="bg-brand-600 p-2 rounded-lg text-white"><Icon d={Paths.Logo} size={24}/></div>
+                                <div><h1 className="text-xl font-bold tracking-tight">FilamentFlow</h1><p className="text-xs text-slate-400">3D Printing Creative Workbench</p></div>
+                            </div>
+                            <div className="flex gap-3 items-center">
+                                <div className="hidden md:flex items-center gap-2 mr-2 bg-slate-800/50 px-3 py-1.5 rounded-full border border-slate-700">
+                                    <div className={`w-2 h-2 rounded-full ${fileHandle ? 'bg-brand-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'bg-slate-500'}`}></div>
+                                    <span className="text-xs font-mono text-slate-300 max-w-[150px] truncate">{fileHandle ? fileHandle.name : '本地缓存模式'}</span>
+                                </div>
+                                <button onClick={handleOpenFile} className="text-sm text-slate-300 hover:text-white px-3 py-2 rounded-lg hover:bg-slate-800 transition-colors">打开库文件</button>
+                                <button onClick={handleSaveFile} className="text-sm text-slate-300 hover:text-white px-3 py-2 rounded-lg hover:bg-slate-800 transition-colors">另存为文件</button>
+                                <button onClick={() => setModals({...modals, job:true})} className="flex items-center gap-2 bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-lg text-sm font-medium transition-colors border border-slate-600"><Icon d={Paths.Edit} size={16}/> 记录打印任务</button>
+                                <button onClick={() => { setFormData({ ...initialForm, bedSettings: JSON.parse(JSON.stringify(DEFAULT_BED)) }); setEditingId(null); setModals({...modals, edit:true}); }} className="flex items-center gap-2 bg-brand-600 hover:bg-brand-500 px-5 py-2 rounded-lg text-sm font-bold shadow-lg shadow-brand-500/20 transition-all active:scale-95"><Icon d={Paths.Plus} size={18}/> 入库</button>
+                            </div>
+                        </div>
+                    </header>
+
+                    <main className="max-w-7xl mx-auto px-6 py-8">
+                        {/* 状态看板 */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 fade-in">
+                            <div className="stat-card teal"><h3 className="text-xs font-bold text-slate-500 uppercase mb-1">可用创作材料</h3><div className="text-4xl font-extrabold text-slate-800">{(stats.w/1000).toFixed(2)} <span className="text-lg text-slate-400 font-medium">kg</span></div><div className="mt-2 text-xs text-slate-400">足够支持多个新作品</div></div>
+                            <div className="stat-card orange"><h3 className="text-xs font-bold text-slate-500 uppercase mb-1">当前材料价值</h3><div className="text-4xl font-extrabold text-slate-800">¥{stats.v.toFixed(0)}</div><div className="mt-2 text-xs text-slate-400">来自你的材料收藏</div></div>
+                            <div className="stat-card blue"><h3 className="text-xs font-bold text-slate-500 uppercase mb-1">已完成创作</h3><div className="text-4xl font-extrabold text-slate-800">{stats.c} <span className="text-lg text-slate-400 font-medium">次</span></div><div className="mt-2 text-xs text-slate-400">每一次打印都是一次探索</div></div>
+                        </div>
+
+                        {/* 主区域 */}
+                        <div className="bg-white rounded-2xl shadow-soft border border-slate-100 min-h-[600px] flex flex-col fade-in">
+                            <div className="p-6 border-b border-slate-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                                <div><h2 className="text-lg font-bold text-slate-800">你的材料桌面</h2><p className="text-sm text-slate-400 mt-1">这里放着你所有可以用来创造的耗材</p></div>
+                                <div className="flex flex-col items-end gap-3 w-full md:w-auto">
+                                    <div className="relative w-full md:w-80">
+                                        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"><Icon d={Paths.Search} size={18}/></div>
+                                        <input type="text" placeholder="搜索材料、颜色或类型..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/20 transition-all" />
+                                    </div>
+                                    <div className="flex flex-wrap gap-2 justify-end">
+                                        <button onClick={() => setActiveBrandFilter(null)} className={`text-xs px-3 py-1 rounded-full font-medium brand-tag ${activeBrandFilter === null ? 'active' : 'bg-slate-100 text-slate-500'}`}>全部</button>
+                                        {allBrands.map(b => (<button key={b} onClick={() => setActiveBrandFilter(b === activeBrandFilter ? null : b)} className={`text-xs px-3 py-1 rounded-full font-medium brand-tag ${activeBrandFilter === b ? 'active' : 'bg-slate-100 text-slate-500'}`}>{b}</button>))}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="p-6 bg-slate-50/50 flex-1">
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                                    {filtered.map(f => {
+                                        const percent = Math.min(100, Math.max(0, ((f.remaining || 0) / (f.weight || 1000)) * 100));
+                                        const costPerG = (f.price && f.weight) ? (f.price / f.weight) : 0;
+                                        const defPlate = f.defaultPlate || 'textured';
+                                        const plateTemp = f.bedSettings?.[defPlate] || { initial: 0, other: 0 };
+                                        
+                                        return (
+                                            <div key={f.id} onClick={() => setDetailId(f.id)} className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm hover:shadow-card cursor-pointer transition-all group relative overflow-hidden">
+                                                {costPerG > 0 && <div className="absolute top-0 right-0 bg-amber-50 text-amber-600 text-[10px] font-bold px-2 py-1 rounded-bl-lg border-l border-b border-amber-100 flex items-center gap-1 z-10"><Icon d={Paths.Coins} size={10} /> ¥{costPerG.toFixed(3)}/g</div>}
+                                                <div className="flex justify-between items-start mb-4">
+                                                    <div className="flex gap-4 items-center">
+                                                        <div className="w-12 h-12 rounded-full shadow-inner border border-slate-100" style={{backgroundColor: f.color}}></div>
+                                                        <div><h3 className="font-bold text-slate-800 text-lg leading-tight">{f.brand}</h3><div className="text-xs font-bold text-slate-500 mt-0.5 uppercase tracking-wide px-2 py-0.5 bg-slate-100 rounded inline-block">{f.type}</div></div>
+                                                    </div>
+                                                    <SpoolRing percentage={percent} color={f.color} />
+                                                </div>
+                                                <div className="text-xs text-slate-500 space-y-2 mb-4 bg-slate-50 p-3 rounded-lg border border-slate-100">
+                                                    <div className="flex justify-between"><span>颜色</span><span className="font-medium text-slate-700">{f.colorName}</span></div>
+                                                    <div className="flex justify-between"><span>喷嘴</span><span className="font-medium text-slate-700">{f.tempMin}-{f.tempMax}°C</span></div>
+                                                    <div className="flex justify-between"><span>热床 ({PLATE_TYPES.find(p=>p.id===defPlate)?.label.split('/')[0]})</span><span className="font-medium text-slate-700">{plateTemp.initial}/{plateTemp.other}°C</span></div>
+                                                </div>
+                                                <div className="flex justify-between items-center pt-2 border-t border-slate-100">
+                                                    <div className="text-xs font-mono text-slate-400">{f.remaining}g / {f.weight}g</div>
+                                                    <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                        <button onClick={(e)=>{e.stopPropagation();setFormData(f);setEditingId(f.id);setModals({...modals, edit:true})}} className="p-1.5 hover:bg-slate-100 rounded text-slate-400 hover:text-brand-600"><Icon d={Paths.Edit} size={16}/></button>
+                                                        <button onClick={(e)=>{e.stopPropagation();handleDelete(f.id)}} className="p-1.5 hover:bg-slate-100 rounded text-slate-400 hover:text-red-500"><Icon d={Paths.Trash} size={16}/></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+
+                    {/* --- 弹窗：编辑/入库 --- */}
+                    {modals.edit && (
+                        <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 fade-in">
+                            <div className="bg-white rounded-2xl shadow-2xl w-full max-w-xl max-h-[90vh] overflow-y-auto">
+                                <div className="px-6 py-5 border-b border-slate-100 flex justify-between items-center">
+                                    <h2 className="text-lg font-bold text-slate-800">{editingId ? '编辑材料属性' : '入库新材料'}</h2>
+                                    <button onClick={() => setModals({...modals, edit:false})} className="text-slate-400 hover:text-slate-700"><Icon d={Paths.X} size={24}/></button>
+                                </div>
+                                <div className="p-6 space-y-6">
+                                    {!editingId && (
+                                        <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 flex items-center gap-3">
+                                            <span className="text-xs font-bold text-slate-400 uppercase"><Icon d={Paths.Sparkles} size={14}/> 载入预设:</span>
+                                            <select className="flex-1 bg-white border border-slate-200 text-slate-700 text-sm rounded-lg p-2 outline-none" onChange={handleLoadPreset} defaultValue=""><option value="" disabled>选择已保存的品牌预设...</option>{presets.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}</select>
+                                            <label className="flex items-center justify-center gap-2 px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-bold text-brand-600 hover:border-brand-500 cursor-pointer transition-all"><Icon d={Paths.Upload} size={14}/> <span>导入文件</span><input type="file" accept=".bbsflmt,.zip" onChange={handleFileUpload} className="hidden" /></label>
+                                        </div>
+                                    )}
+                                    <form onSubmit={handleSaveFilament} className="space-y-5">
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <div><label className="text-xs font-bold text-slate-500 mb-1 block">品牌</label><input required value={formData.brand} onChange={e=>setFormData({...formData, brand:e.target.value})} className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 outline-none focus:bg-white focus:border-brand-500"/></div>
+                                            <div><label className="text-xs font-bold text-slate-500 mb-1 block">材质</label><select value={formData.type} onChange={e=>{const v=e.target.value; setFormData(p=>({...p, type:v, ...BASE_PROFILES[v]}))}} className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 outline-none">{TYPE_GROUPS.map(g=><optgroup key={g.label} label={g.label}>{g.options.map(o=><option key={o} value={o}>{o}</option>)}</optgroup>)}</select></div>
+                                        </div>
+                                        <div className="grid grid-cols-3 gap-4">
+                                            <div className="col-span-2">
+                                                <label className="text-xs font-bold text-slate-500 mb-1 block">颜色</label>
+                                                <div className="flex gap-2 items-center"><input type="color" value={formData.color} onChange={e=>setFormData({...formData, color: e.target.value})} className="h-10 w-12 p-1 bg-white border border-slate-200 rounded-lg cursor-pointer"/><input value={formData.colorName} onChange={e=>setFormData({...formData, colorName: e.target.value})} placeholder="颜色名称" className="flex-1 px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 outline-none"/></div>
+                                                <div className="flex gap-1 mt-2 flex-wrap">{COMMON_COLORS.map(c => <div key={c} onClick={() => setFormData({...formData, color: c})} className="w-6 h-6 rounded border border-slate-200 cursor-pointer hover:scale-110 transition-transform" style={{backgroundColor: c}}></div>)}</div>
+                                            </div>
+                                            <div className="space-y-4">
+                                                <div><label className="text-xs font-bold text-slate-500 mb-1 block">总重(g)</label><input type="number" value={formData.weight} onChange={e=>setFormData({...formData, weight: parseInt(e.target.value)})} className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 outline-none"/></div>
+                                                <div><label className="text-xs font-bold text-slate-500 mb-1 block">价格(¥)</label><input type="number" value={formData.price} onChange={e=>setFormData({...formData, price: parseFloat(e.target.value)})} className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 outline-none"/></div>
+                                            </div>
+                                        </div>
+                                        <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                                            <div className="flex flex-wrap gap-2 mb-4">
+                                                {PLATE_TYPES.map(p => (<button type="button" key={p.id} onClick={()=>setActivePlateTab(p.id)} className={`text-xs font-bold px-3 py-1.5 rounded-lg transition-all flex-grow ${activePlateTab===p.id ? 'plate-tab-active shadow' : 'plate-tab-inactive'}`}>{p.label}</button>))}
+                                            </div>
+                                            <div className="grid grid-cols-2 gap-4">
+                                                <div><label className="text-[10px] font-bold text-slate-400 mb-1 block">首层温度</label><input type="number" value={formData.bedSettings[activePlateTab]?.initial||0} onChange={e=>{const v=parseInt(e.target.value);setFormData(p=>({...p, bedSettings:{...p.bedSettings, [activePlateTab]:{...p.bedSettings[activePlateTab], initial:v}}}))}} className="w-full px-3 py-2 border rounded-lg bg-white text-sm"/></div>
+                                                <div><label className="text-[10px] font-bold text-slate-400 mb-1 block">其他层</label><input type="number" value={formData.bedSettings[activePlateTab]?.other||0} onChange={e=>{const v=parseInt(e.target.value);setFormData(p=>({...p, bedSettings:{...p.bedSettings, [activePlateTab]:{...p.bedSettings[activePlateTab], other:v}}}))}} className="w-full px-3 py-2 border rounded-lg bg-white text-sm"/></div>
+                                            </div>
+                                            <button type="button" onClick={()=>setFormData({...formData, defaultPlate: activePlateTab})} className={`w-full mt-4 py-2 rounded-lg text-xs font-bold flex items-center justify-center gap-2 transition-all ${formData.defaultPlate===activePlateTab ? 'bg-brand-100 text-brand-700 border border-brand-200' : 'bg-white border border-slate-200 text-slate-500'}`}>{formData.defaultPlate===activePlateTab ? <Icon d={Paths.Check} size={14}/> : <span className="w-3.5 h-3.5 rounded-full border border-slate-300"></span>}{formData.defaultPlate===activePlateTab ? '已设为默认打印板' : '设为默认打印板'}</button>
+                                        </div>
+                                        <div className="pt-4 flex justify-end gap-3 border-t border-slate-100">
+                                            <button type="button" onClick={() => setModals({...modals, edit:false})} className="px-5 py-2 text-slate-500 font-medium hover:bg-slate-50 rounded-lg">取消</button>
+                                            <button type="submit" className="px-6 py-2 bg-brand-600 text-white font-bold rounded-lg hover:bg-brand-500 shadow-lg shadow-brand-600/20">保存</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* --- 多色创作弹窗 --- */}
+                    {modals.job && (
+                        <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 fade-in">
+                            <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col">
+                                <div className="px-6 py-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/50 rounded-t-2xl">
+                                    <div className="flex items-center gap-3"><div className="p-2 bg-indigo-100 text-indigo-600 rounded-lg"><Icon d={Paths.Palette}/></div><div><h2 className="text-lg font-bold text-slate-800">登记创作任务</h2><p className="text-xs text-slate-500">多色/批量扣减库存</p></div></div>
+                                    <button onClick={() => setModals({...modals, job:false})}><Icon d={Paths.X} className="text-slate-400 hover:text-slate-700"/></button>
+                                </div>
+                                <div className="p-6 overflow-y-auto flex-1 space-y-6">
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div><label className="text-xs font-bold text-slate-500 mb-1 block">作品名称</label><input value={jobForm.name} onChange={e=>setJobForm({...jobForm, name:e.target.value})} className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 outline-none" placeholder="例如: 机械龙"/></div>
+                                        <div><label className="text-xs font-bold text-slate-500 mb-1 block">链接</label><input value={jobForm.link} onChange={e=>setJobForm({...jobForm, link:e.target.value})} className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 outline-none" placeholder="MakerWorld..."/></div>
+                                    </div>
+                                    <div>
+                                        <label className="text-xs font-bold text-slate-500 mb-1 block">作品照片</label>
+                                        <label className="flex items-center justify-center h-32 border-2 border-dashed border-slate-300 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors relative overflow-hidden group">
+                                            {jobForm.image ? <img src={jobForm.image} className="absolute inset-0 w-full h-full object-cover"/> : <span className="text-slate-400 text-xs flex flex-col items-center gap-2 group-hover:text-brand-600"><Icon d={Paths.Camera}/> 上传照片</span>}
+                                            <input type="file" className="hidden" accept="image/*" onChange={(e)=>handleImage(e, setJobForm)}/>
+                                        </label>
+                                    </div>
+                                    <div className="border-t border-slate-100 pt-4">
+                                        <div className="flex justify-between items-center mb-3"><h3 className="font-bold text-slate-700">材料消耗清单</h3><button onClick={handleAddMultiColorRow} className="text-xs font-bold text-brand-600 bg-brand-50 px-3 py-1.5 rounded-lg hover:bg-brand-100 transition-colors flex items-center gap-1"><Icon d={Paths.Plus} size={14}/> 添加材料</button></div>
+                                        <div className="space-y-2">
+                                            {jobForm.items.map((row, idx) => (
+                                                <div key={idx} className="flex gap-2 items-center">
+                                                    <select value={row.id} onChange={(e) => {const n=[...jobForm.items];n[idx].id=e.target.value;setJobForm({...jobForm, items:n})}} className="flex-1 px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm text-slate-700 outline-none focus:border-brand-500"><option value="">选择材料...</option>{filaments.map(f => <option key={f.id} value={f.id}>{f.brand} {f.type} ({f.colorName})</option>)}</select>
+                                                    <input type="number" placeholder="g" value={row.used} onChange={(e)=>{const n=[...jobForm.items];n[idx].used=e.target.value;setJobForm({...jobForm, items:n})}} className="w-20 px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm text-center outline-none focus:border-brand-500" />
+                                                    <button onClick={()=>setJobForm(p=>({...p, items: p.items.filter((_,i)=>i!==idx)}))} className="text-slate-400 hover:text-red-500"><Icon d={Paths.Trash}/></button>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="p-4 border-t border-slate-100 flex justify-end gap-3 rounded-b-2xl">
+                                    <button onClick={() => setModals({...modals, job:false})} className="px-5 py-2 text-slate-500 font-medium hover:bg-slate-50 rounded-lg">取消</button>
+                                    <button onClick={submitJob} className="px-6 py-2 bg-indigo-600 text-white font-bold rounded-lg hover:bg-indigo-500 shadow-lg shadow-indigo-600/20">确认归档</button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* --- 详情弹窗 --- */}
+                    {detailFilament && (
+                        <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 fade-in">
+                            <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl h-[85vh] flex flex-col overflow-hidden">
+                                <div className="p-6 border-b border-slate-100 flex justify-between items-start bg-slate-50/50">
+                                    <div className="flex gap-5">
+                                        <div className="w-20 h-20 rounded-2xl shadow-sm border-2 border-white ring-1 ring-slate-100" style={{ backgroundColor: detailFilament.color }}></div>
+                                        <div><h2 className="text-3xl font-black text-slate-800 tracking-tight">{detailFilament.brand}</h2><div className="flex items-center gap-2 mt-2"><span className="px-2.5 py-1 rounded-md text-xs font-bold bg-white border border-slate-200 text-slate-600 shadow-sm">{detailFilament.type}</span><span className="text-slate-500 text-sm font-medium">{detailFilament.colorName}</span></div></div>
+                                    </div>
+                                    <button onClick={() => setDetailId(null)} className="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors"><Icon d={Paths.X} size={24}/></button>
+                                </div>
+                                <div className="flex-1 overflow-y-auto bg-white p-6">
+                                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 h-full">
+                                        <div className="space-y-6">
+                                            <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-soft">
+                                                <h3 className="text-xs font-bold text-brand-600 uppercase mb-4 flex items-center gap-2"><Icon d={Paths.Package} size={16}/> 库存状态</h3>
+                                                <div className="text-center">
+                                                    <span className="text-5xl font-black text-slate-800">{detailFilament.remaining}</span><span className="text-slate-400 ml-1 font-medium">/ {detailFilament.weight}g</span>
+                                                    <div className="h-3 w-full bg-slate-100 rounded-full mt-4 overflow-hidden"><div className="h-full bg-brand-500 transition-all duration-1000" style={{ width: `${(detailFilament.remaining/detailFilament.weight)*100}%` }}></div></div>
+                                                </div>
+                                            </div>
+                                            <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100 space-y-3">
+                                                <div className="flex justify-between text-sm"><span className="text-slate-400">喷嘴</span><span className="font-mono font-bold text-slate-700">{detailFilament.tempMin}-{detailFilament.tempMax}°C</span></div>
+                                                <div className="flex justify-between text-sm"><span className="text-slate-400">流量比</span><span className="font-mono font-bold text-slate-700">{detailFilament.flowRatio}</span></div>
+                                                <div className="flex justify-between text-sm"><span className="text-slate-400">PA 值</span><span className="font-mono font-bold text-slate-700">{detailFilament.pressureAdvance}</span></div>
+                                                <div className="border-t border-slate-200 pt-3 mt-1">
+                                                    <div className="text-[10px] text-slate-400 font-bold uppercase mb-2">热床配置表</div>
+                                                    {PLATE_TYPES.map(p => {
+                                                        const s = detailFilament.bedSettings?.[p.id]; if(!s) return null;
+                                                        const isDef = detailFilament.defaultPlate === p.id;
+                                                        return <div key={p.id} className={`flex justify-between text-xs py-1 ${isDef?'text-brand-600 font-bold':'text-slate-500'}`}><span>{p.label.split('/')[0]} {isDef&&'★'}</span><span>{s.initial} / {s.other}°C</span></div>
+                                                    })}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="lg:col-span-2 flex flex-col h-full">
+                                            <div className="flex justify-between items-center mb-4"><h3 className="font-bold text-slate-800 text-lg">创作记录</h3><button onClick={() => setIsAddingHistory(!isAddingHistory)} className="bg-slate-900 text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-slate-800 flex items-center gap-2 shadow-lg shadow-slate-900/20">{isAddingHistory ? '取消' : <><Icon d={Paths.Plus} size={14}/> 记录一次</>}</button></div>
+                                            <div className="bg-slate-50/50 rounded-2xl border border-slate-100 flex-1 overflow-hidden flex flex-col">
+                                                {isAddingHistory && (
+                                                    <form onSubmit={addHistory} className="p-4 bg-white border-b border-slate-100 space-y-4 fade-in shadow-sm z-10">
+                                                        <div className="grid grid-cols-2 gap-4">
+                                                            <input required placeholder="作品名称" value={historyForm.name} onChange={e => setHistoryForm({...historyForm, name: e.target.value})} className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm" />
+                                                            <input required type="number" placeholder="消耗(g)" value={historyForm.weightUsed} onChange={e => setHistoryForm({...historyForm, weightUsed: e.target.value})} className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm" />
+                                                        </div>
+                                                        <div className="flex gap-4">
+                                                            <input type="url" placeholder="MakerWorld 链接 (可选)" value={historyForm.link} onChange={e => setHistoryForm({...historyForm, link: e.target.value})} className="flex-1 px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm" />
+                                                            <label className="flex items-center gap-2 px-3 py-2 border border-dashed border-slate-300 rounded-lg cursor-pointer hover:bg-slate-50 text-xs text-slate-500"><Icon d={Paths.Camera} size={14}/> <span>上传图片</span><input type="file" accept="image/*" onChange={(e) => handleImage(e, setHistoryForm)} className="hidden"/></label>
+                                                        </div>
+                                                        {imagePreview && <img src={imagePreview} className="h-16 w-16 object-cover rounded-lg border"/>}
+                                                        <button type="submit" className="w-full py-2 bg-brand-600 text-white rounded-lg font-bold text-sm">确认添加</button>
+                                                    </form>
+                                                )}
+                                                <div className="overflow-y-auto p-4 space-y-3">
+                                                    {[...detailFilament.history].reverse().map(r => {
+                                                        const unitPrice = (detailFilament.price && detailFilament.weight) ? (detailFilament.price / detailFilament.weight) : 0;
+                                                        const cost = unitPrice * r.weight;
+                                                        return (
+                                                            <div key={r.id} className="bg-white p-4 rounded-xl border border-slate-100 flex gap-4 hover:shadow-md transition-all group relative">
+                                                                <div className="w-20 h-20 bg-slate-50 rounded-lg overflow-hidden flex items-center justify-center shrink-0 border border-slate-100">{r.image ? <img src={r.image} className="w-full h-full object-cover"/> : <Icon d={Paths.ImageIcon} className="text-slate-200" size={32}/>}</div>
+                                                                <div className="flex-1 flex flex-col justify-center">
+                                                                    <div className="flex justify-between items-start mb-1"><h4 className="font-bold text-slate-800">{r.name}</h4><span className="text-xs text-slate-400 font-mono">{new Date(r.date).toLocaleDateString()}</span></div>
+                                                                    <div className="flex items-center gap-2 mt-1">
+                                                                        <span className="text-xs font-bold bg-slate-100 text-slate-500 px-2 py-1 rounded-md flex items-center gap-1"><Icon d={Paths.TrendingDown} size={12}/> -{r.weight}g</span>
+                                                                        {cost > 0 && <span className="text-xs font-bold bg-amber-50 text-amber-600 px-2 py-1 rounded-md flex items-center gap-1 border border-amber-100"><Icon d={Paths.Coins} size={12}/> ¥{cost.toFixed(2)}</span>}
+                                                                    </div>
+                                                                    {r.link && <a href={r.link} target="_blank" className="text-xs text-brand-600 hover:underline flex items-center gap-1 mt-2"><Icon d={Paths.ExternalLink} size={12}/> 查看链接</a>}
+                                                                </div>
+                                                                <button onClick={() => deleteHistory(r.id)} className="absolute bottom-4 right-4 text-slate-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"><Icon d={Paths.Trash} size={18}/></button>
+                                                            </div>
+                                                        );
+                                                    })}
+                                                    {!detailFilament.history.length && <div className="text-center py-10 text-slate-400 text-sm">还没有记录，开始打印吧！</div>}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<FilamentManager />);
+    </script>
+</body>
+</html>

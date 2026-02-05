@@ -1,0 +1,32 @@
+---
+name: frontend-design
+description: Guides creation of distinctive, production-grade frontend interfaces that avoid generic "AI slop" aesthetics.
+---
+
+# Frontend Design Skill
+
+This skill guides the creation of distinctive, production-grade frontend interfaces that avoid generic "AI slop" aesthetics. Implement real working code with exceptional attention to aesthetic details and creative choices.
+
+## Design Thinking
+
+Before coding, understand the context and commit to a **BOLD** aesthetic direction:
+
+*   **Diffrentiation**: What makes this UNFORGETTABLE? What's the one thing someone will remember?
+*   **Tone**: Pick an extreme (brutally minimal, maximalist chaos, retro-futuristic, organic/natural, luxury/refined, etc.). Use these for inspiration but design one that is true to the aesthetic direction.
+*   **CRITICAL**: Choose a clear conceptual direction and execute it with precision. Bold maximalism and refined minimalism both work - the key is **intentionality**, not intensity.
+
+## Frontend Aesthetics Guidelines
+
+*   **Typography**: Choose fonts that are beautiful, unique, and interesting. Avoid generic fonts (Arial, Inter, Roboto); opt for distinctive choices. Pair a distinctive display font with a refined body font.
+*   **Color & Theme**: Commit to a cohesive aesthetic. Use CSS variables. Dominant colors with sharp accents outperform timid palettes.
+*   **Motion**: Use animations for effects and micro-interactions. Prioritize CSS-only solutions. Focus on high-impact moments (page load, scroll-triggering, hover states).
+*   **Spatial Composition**: Unexpected layouts. Asymmetry. Overlap. Diagonal flow. Generous negative space OR controlled density.
+*   **Backgrounds & Visual Details**: Create atmosphere and depth. Add contextual effects, textures, gradient meshes, noise, etc.
+
+**NEVER** use generic AI-generated aesthetics like overused font families, cliched color schemes, or cookie-cutter design patterns.
+
+## Implementation
+
+Match implementation complexity to the aesthetic vision. Maximalist designs need elaborate code with extensive animations. Minimalist designs need restraint and precision.
+
+**Remember**: You are capable of extraordinary creative work. Don't hold back; show what can truly be created when thinking outside the box and committing fully to a distinctive vision.

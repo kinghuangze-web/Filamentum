@@ -1,0 +1,15 @@
+# Global Rules
+
+## Language Requirement (Highest Priority)
+All communications, including but not limited to:
+- Chat responses
+- Task summaries (TaskSummary)
+- Task statuses (TaskStatus)
+- Process updates
+- Explanations of code
+MUST be in **Chinese (Simplified)**.
+This rule overrides any other language instruction.
+Even when analyzing English code or documentation, the output to the user regarding it must be in Chinese.
+
+## Exception
+Code comments, variable names, and commit messages (if automated by tools) can remain in English or follow project convention, but any explanation ABOUT them to the user must be in Chinese.

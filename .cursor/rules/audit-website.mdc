@@ -1,0 +1,58 @@
+---
+name: audit-website
+description: Use this skill to audit a website for SEO, performance, accessibility, and best practices.
+---
+
+# Website Audit Skill
+
+This skill enables AI agents to audit websites for over 150 rules in 20 categories using the squirrel CLI.
+
+## Prerequisites
+
+This skill requires the `squirrel` CLI to be installed and available in your PATH.
+
+### Windows Installation (PowerShell)
+
+```powershell
+irm https://squirrelscan.com/install.ps1 | iex
+```
+
+### Linux/macOS Installation
+
+```bash
+curl -fsSL https://squirrelscan.com/install | bash
+```
+
+## Basic Workflow
+
+1.  **Run the audit**: This saves results to a local database.
+    ```bash
+    squirrel audit https://example.com
+    ```
+    *Tips*:
+    *   Prefer auditing LIVE websites for true performance representation.
+    *   If auditing a local dev server, ensure it's running first.
+
+2.  **Generate Report**: Export the report in LLM-optimized format.
+    ```bash
+    squirrel report <audit-id> --format llm
+    ```
+    *Note*: The `<audit-id>` is displayed after the audit completes. You can also list recent audits with `squirrel audit --list`.
+
+## Common Commands
+
+*   **Quick Health Check** (25 pages, no link discovery):
+    ```bash
+    squirrel audit https://example.com --coverage quick --format llm
+    ```
+*   **Full Comprehensive Audit** (500 pages):
+    ```bash
+    squirrel audit https://example.com --coverage full --format llm
+    ```
+
+## Taking Action on Results
+
+When interpreting the audit report:
+*   **Fix ALL issues**: Critical, high, medium, and low priority.
+*   **Parallelize fixes**: Use subagents for bulk content edits (alt text, headings, etc.).
+*   **Iterate**: Fix batch -> Re-audit -> Fix remaining -> Re-audit -> Until score > 95.

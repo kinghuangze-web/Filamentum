@@ -1,0 +1,91 @@
+[
+  {
+    "id": "5d7016c6-3cf9-47a8-9b08-10f84506561b",
+    "brand": "小北",
+    "type": "PETG 哑光 (Matte)",
+    "color": "#1a1a1a",
+    "colorName": "哑光黑",
+    "weight": 1000,
+    "remaining": 1000,
+    "price": 89,
+    "tempMin": 190,
+    "tempMax": 220,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.04,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "notes": "",
+    "history": [
+      {
+        "id": "c796fb4d-8928-40e2-8d5a-d284ac894229",
+        "name": "3",
+        "weight": 159,
+        "date": "2026/1/29"
+      }
+    ],
+    "createdAt": "2026-01-29T10:24:03.438Z",
+    "updatedAt": "2026-01-29T13:11:53.119Z"
+  },
+  {
+    "id": "6fdbdaba-a7ca-4802-9743-382f4ceb8248",
+    "brand": "小北",
+    "type": "PETG 哑光 (Matte)",
+    "color": "#06b6d4",
+    "colorName": "哑光黑",
+    "weight": 1000,
+    "remaining": 1000,
+    "price": 28.29,
+    "tempMin": 230,
+    "tempMax": 260,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "notes": "",
+    "history": [],
+    "createdAt": "2026-01-29T10:24:03.439Z",
+    "updatedAt": "2026-01-29T13:11:59.514Z"
+  }
+]

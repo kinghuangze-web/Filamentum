@@ -1,0 +1,39 @@
+---
+name: remotion-best-practices
+description: Use this skill whenever you are dealing with Remotion code to obtain domain-specific knowledge and best practices.
+---
+
+# Remotion Best Practices
+
+This skill provides domain-specific knowledge for Remotion, a framework for creating videos programmatically with React.
+
+## Core Concepts & Rules
+
+When working with Remotion, refer to these key areas:
+
+*   **3D Content**: Integration with Three.js and React Three Fiber.
+*   **Animations**: Fundamental animation patterns (interpolation, springs, easing).
+*   **Assets**: Best practices for importing images, videos, audio, and fonts.
+*   **Audio**: Handling audio tracks, trimming, volume, speed, and pitch.
+*   **Metadata**: Dynamically setting composition duration, dimensions (`calculate-metadata`).
+*   **Compositions**: Defining `Composition`, `Still`, folder structures, and props.
+*   **Captions**: Displaying captions (TikTok style), importing SRT, or transcribing audio.
+*   **Performance**: Using `Freeze` to optimize heavy components.
+*   **Rendering**: settings up `renderMedia` or `renderStill`.
+
+## Important Patterns
+
+*   **Tailwind CSS**: Use the `Tailwind` helper or standard PostCSS setup.
+*   **Fonts**: properly load fonts using `continueRender` handle or `@remotion/google-fonts`.
+*   **Randomness**: Use `random()` from `remotion` instead of `Math.random()` to ensure deterministic rendering.
+*   **Absolute Imports**: Prefer absolute imports for assets to avoid path issues during rendering.
+
+## Common Tools
+
+*   `@remotion/media-utils`: For `getAudioDurationInSeconds`, `getVideoMetadata`, etc.
+*   `@remotion/paths`: For handling paths correctly.
+*   `zod`: For defining schema props in `z.object({})`.
+
+## Reference Links
+
+For detailed rules, refer to the [remotion-dev/skills repository](https://github.com/remotion-dev/skills/tree/main/skills/remotion/rules).
