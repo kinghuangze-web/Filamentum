@@ -57,10 +57,19 @@ export function AddEditFilamentModal({
     const [matchedPreset, setMatchedPreset] = useState<FilamentPreset | null>(null);
     const [presetApplied, setPresetApplied] = useState(false);
     const [saveAsPreset, setSaveAsPreset] = useState(false);
+    // 新增：判断是否为自定义类型模式
+    const [isCustomType, setIsCustomType] = useState(false);
 
     // 编辑模式下填充数据
     useEffect(() => {
         if (editingFilament) {
+            console.log('Initializing form with:', editingFilament);
+
+            // 判断是否为标准类型
+            const allStandardTypes = Object.values(FILAMENT_TYPES).flat();
+            const isStandard = allStandardTypes.includes(editingFilament.type);
+            setIsCustomType(!isStandard);
+
             setFormData({
                 brand: editingFilament.brand,
                 type: editingFilament.type,
@@ -80,8 +89,24 @@ export function AddEditFilamentModal({
             setActivePlateTab(editingFilament.defaultPlate);
             setPresetApplied(false);
             setMatchedPreset(null);
+        } else {
+            // 如果 modal 打开但 editingFilament 为 null，说明是新增模式，已经在 resetForm处理了？
+            // resetForm 仅在Close时调用。
+            // 如果用户从编辑 -> 关闭 -> 新增，resetForm 会被调用。
+            // 如果用户从新增 -> 编辑，resetForm 会被调用吗？
+            // page.tsx openAddModal calls setEditingFilament(null).
+            // 这里的 useEffect 依赖 editingFilament。
+            // 如果 editingFilament 变为 null，我们应该重置表单吗？
+            // 为了安全起见，可以在这里重置，但 onClose 已经做了。
+            // 关键问题是：OpenAddModal 设置 null，modals.addEdit true。
+            // OpenEditModal 设置 filament，modals.addEdit true。
+            // 组件一直挂载吗？是的，在 page.tsx 中。
+            // 所以 useEffect 会触发。
+            if (isOpen && !editingFilament) {
+                resetForm();
+            }
         }
-    }, [editingFilament]);
+    }, [editingFilament, isOpen]);
 
     // 监听品牌+类型变化，自动匹配预设
     useEffect(() => {
@@ -160,6 +185,7 @@ export function AddEditFilamentModal({
         setMatchedPreset(null);
         setPresetApplied(false);
         setSaveAsPreset(false);
+        setIsCustomType(false);
     };
 
     if (!isOpen) return null;
@@ -258,28 +284,53 @@ export function AddEditFilamentModal({
                                 </datalist>
                             </div>
                             <div>
-                                <label className="text-xs font-bold text-stone-500 mb-2 block uppercase tracking-wide">
-                                    材质类型
-                                </label>
-                                <select
-                                    value={formData.type}
-                                    onChange={e => {
-                                        setFormData({ ...formData, type: e.target.value });
-                                        setPresetApplied(false);
-                                    }}
-                                    className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl text-stone-800 outline-none focus:bg-white focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition-all"
-                                >
-                                    {customTypes.length > 0 && (
-                                        <optgroup label="自定义">
-                                            {customTypes.map(type => <option key={type} value={type}>{type}</option>)}
-                                        </optgroup>
+                                {/* 材质类型选择 - 混合模式 (Select + Custom Input) */}
+                                <div className="space-y-2">
+                                    <select
+                                        value={isCustomType ? 'custom' : formData.type}
+                                        onChange={e => {
+                                            const val = e.target.value;
+                                            if (val === 'custom') {
+                                                setIsCustomType(true);
+                                                // 保持原有值作为初始输入，或者是空? 
+                                                // 如果原来就是标准值切换到自定义，可能想保留？
+                                                // 暂时保持原值，方便修改
+                                            } else {
+                                                setIsCustomType(false);
+                                                setFormData({ ...formData, type: val });
+                                                setPresetApplied(false);
+                                            }
+                                        }}
+                                        className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl text-stone-800 outline-none focus:bg-white focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition-all appearance-none cursor-pointer"
+                                    >
+                                        {Object.entries(FILAMENT_TYPES).map(([category, types]) => (
+                                            <optgroup key={category} label={category}>
+                                                {types.map(type => <option key={type} value={type}>{type}</option>)}
+                                            </optgroup>
+                                        ))}
+                                        <option value="custom">✨ 自定义 / 其他...</option>
+                                    </select>
+
+                                    {/* 自定义输入框 (仅当选择“自定义”时显示) */}
+                                    {isCustomType && (
+                                        <div className="animate-in fade-in slide-in-from-top-2 duration-200">
+                                            <input
+                                                type="text"
+                                                value={formData.type}
+                                                onChange={e => {
+                                                    setFormData({ ...formData, type: e.target.value });
+                                                    setPresetApplied(false);
+                                                }}
+                                                placeholder="输入材质名称 (如: PETG Rapid)"
+                                                className="w-full px-4 py-3 bg-amber-50/50 border border-amber-200 rounded-xl text-amber-900 outline-none focus:bg-white focus:ring-2 focus:ring-amber-500/20 transition-all placeholder:text-amber-400/50"
+                                                autoFocus
+                                            />
+                                            <div className="text-[10px] text-amber-600/70 mt-1 pl-1">
+                                                * 将作为新的材质类型保存
+                                            </div>
+                                        </div>
                                     )}
-                                    {Object.entries(FILAMENT_TYPES).map(([category, types]) => (
-                                        <optgroup key={category} label={category}>
-                                            {types.map(type => <option key={type} value={type}>{type}</option>)}
-                                        </optgroup>
-                                    ))}
-                                </select>
+                                </div>
                             </div>
                         </div>
 

@@ -13,7 +13,7 @@ import { AIHubModal } from '@/src/components/AIHubModal';
 import { AppHeader } from '@/src/components/AppHeader';
 import { Loader2 } from 'lucide-react';
 import { Filament, AIConfig, CostConfig, Printer, AppSettings } from '@/src/lib/types';
-import { FarmDashboard } from '@/src/components/FarmDashboard';
+import { FilamentDashboard, DashboardFilter } from '@/src/components/FilamentDashboard';
 import { filamentService } from '@/src/services/filament-service';
 import { localVault } from '@/src/services/local-vault';
 import { getStoredAIConfig } from '@/src/lib/ai-service';
@@ -38,7 +38,8 @@ export default function Home() {
     { id: '1', name: 'Bambu Lab A1', type: 'FDM', powerWatts: 150, status: 'idle' },
     { id: '2', name: 'Bambu Lab P1S', type: 'FDM', powerWatts: 350, status: 'printing' }
   ]);
-  const [farmMode, setFarmMode] = useState(false);
+  const [dashboardOpen, setDashboardOpen] = useState(false);
+  const [dashboardFilter, setDashboardFilter] = useState<DashboardFilter>({ type: null, value: null });
   const [appSettings, setAppSettings] = useState<AppSettings>({
     enabledFilamentTypes: DEFAULT_ENABLED_TYPES,
     customFilamentTypes: []
@@ -359,6 +360,22 @@ export default function Home() {
     }
   };
 
+  // 批量删除耗材
+  const handleBatchDelete = async (ids: string[]) => {
+    try {
+      setLoading(true);
+      const remaining = filaments.filter(f => !ids.includes(f.id));
+      const savedList = await filamentService.saveAll(remaining);
+      setFilaments(savedList);
+      toast.success(`成功删除 ${ids.length} 个耗材`);
+    } catch (e) {
+      console.error('Batch delete failed:', e);
+      toast.error('批量删除失败');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <main className="min-h-screen bg-gradient-to-br from-stone-50 via-orange-50/30 to-amber-50/40 relative">
       {/* 仅在初始加载时显示加载提示 */}
@@ -373,8 +390,8 @@ export default function Home() {
 
       {/* Header */}
       <AppHeader
-        farmMode={farmMode}
-        onToggleFarmMode={() => setFarmMode(!farmMode)}
+        dashboardOpen={dashboardOpen}
+        onToggleDashboard={() => setDashboardOpen(!dashboardOpen)}
         onOpenSettings={() => setModals(m => ({ ...m, settings: true }))}
         onOpenAIHub={() => setModals(m => ({ ...m, aiHub: true }))}
         onOpenAddModal={openAddModal}
@@ -386,23 +403,53 @@ export default function Home() {
         vaultName={vaultName}
       />
 
-      {/* 主内容区 */}
-      <div className="max-w-7xl mx-auto px-6 py-8">
-        {farmMode ? (
-          <FarmDashboard printers={printers} onOpenSettings={() => setModals(m => ({ ...m, settings: true }))} />
-        ) : (
-          <>
+      {/* 主内容区 - 使用 flex 布局，仪表盘放右侧 */}
+      <div className="max-w-[1800px] mx-auto px-6 py-8">
+        <div className="flex gap-6">
+          {/* 左侧主内容 */}
+          <div className={`flex-1 min-w-0 transition-all duration-300 ${dashboardOpen ? 'lg:mr-0' : ''}`}>
+            {/* 主列表 */}
             <StatsCards data={stats} />
             <FilamentTable
-              filaments={filaments}
+              filaments={dashboardFilter.type ? filaments.filter(f => {
+                if (dashboardFilter.type === 'brand') return f.brand === dashboardFilter.value;
+                if (dashboardFilter.type === 'material') return f.type.toUpperCase().includes((dashboardFilter.value || '').toUpperCase());
+                if (dashboardFilter.type === 'color') return f.colorName === dashboardFilter.value;
+                return true;
+              }) : filaments}
               onCardClick={openDetailModal}
               onEdit={openEditModal}
               onDelete={handleDeleteFilament}
+              onBatchDelete={handleBatchDelete}
               onOpenPresetManager={() => setModals(m => ({ ...m, presetManager: true }))}
               onOpenPrintJob={() => setModals(m => ({ ...m, printJob: true }))}
               onUpdateFilament={handleSaveFilament}
             />
-          </>
+          </div>
+
+          {/* 右侧仪表盘 (固定宽度侧边栏) */}
+          {dashboardOpen && (
+            <div className="hidden lg:block w-[400px] flex-shrink-0 sticky top-24 self-start max-h-[calc(100vh-120px)] overflow-y-auto">
+              <FilamentDashboard
+                filaments={filaments}
+                onFilterChange={setDashboardFilter}
+                onClose={() => setDashboardOpen(false)}
+                currentFilter={dashboardFilter}
+              />
+            </div>
+          )}
+        </div>
+
+        {/* 移动端仪表盘 - 保持原有位置 */}
+        {dashboardOpen && (
+          <div className="lg:hidden mb-8">
+            <FilamentDashboard
+              filaments={filaments}
+              onFilterChange={setDashboardFilter}
+              onClose={() => setDashboardOpen(false)}
+              currentFilter={dashboardFilter}
+            />
+          </div>
         )}
       </div>
 
@@ -412,7 +459,10 @@ export default function Home() {
         onClose={() => setModals(m => ({ ...m, addEdit: false }))}
         onSave={handleSaveFilament}
         editingFilament={editingFilament}
-        customTypes={appSettings.customFilamentTypes}
+        customTypes={Array.from(new Set([
+          ...appSettings.customFilamentTypes,
+          ...filaments.map(f => f.type)
+        ])).sort()}
       />
 
       <PrintJobModal
@@ -475,6 +525,7 @@ export default function Home() {
         }}
         config={aiConfig}
         onConfigUpdate={setAiConfig}
+        filaments={filaments}
       />
 
       <FilamentTypeSettingsModal

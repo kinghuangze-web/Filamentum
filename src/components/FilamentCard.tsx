@@ -20,6 +20,9 @@ export const FilamentCard = memo(function FilamentCard({ data: item, onClick, on
     const defPlateId = item.defaultPlate || 'textured';
     const defPlateLabel = PLATE_TYPES.find(p => p.id === defPlateId)?.label.split('/')[0] || '热床';
     const plateTemp = item.bedSettings?.[defPlateId] || { initial: 0, other: 0 };
+    // 计算卷数（以1000g为1卷）
+    const spoolCount = item.weight > 0 ? (item.weight / 1000) : 1;
+    const spoolDisplay = spoolCount >= 1 ? `${Math.round(spoolCount)} 卷` : `${spoolCount.toFixed(1)} 卷`;
 
     return (
         <div
@@ -30,7 +33,7 @@ export const FilamentCard = memo(function FilamentCard({ data: item, onClick, on
                 <div className="flex justify-between items-start mb-4">
                     <div className="flex items-center gap-2">
                         <div className="bg-stone-800 text-white text-[10px] font-bold px-2 py-1 rounded-md shadow-sm">
-                            1 卷
+                            {spoolDisplay}
                         </div>
                         <div className="bg-amber-50 text-amber-600 text-[10px] font-bold px-2 py-1 rounded-md border border-amber-100 flex items-center gap-1">
                             <Coins size={10} />

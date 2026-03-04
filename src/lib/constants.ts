@@ -51,48 +51,49 @@ export const POPULAR_BRANDS = [
  */
 export const FILAMENT_TYPES = {
     'PLA系列': [
-        'PLA 基础 (Basic)',
-        'PLA 哑光 (Matte)',
-        'PLA 丝绸 (Silk)',
-        'PLA 强韧 (Tough)',
-        'PLA+ 增强',
-        'PLA 大理石 (Marble)',
-        'PLA 闪光 (Sparkle)',
-        'PLA 夜光 (Glow)',
-        'PLA 金属 (Metal)',
-        'PLA 木质 (Wood)',
-        'PLA 航空 (Aero)',
-        'PLA-CF 碳纤',
-        'PLA-GF 玻纤',
+        'PLA Basic',
+        'PLA Matte',
+        'PLA Silk',
+        'PLA Tough',
+        'PLA+',
+        'PLA Marble',
+        'PLA Sparkle',
+        'PLA Glow',
+        'PLA Metal',
+        'PLA Wood',
+        'PLA Aero',
+        'PLA-CF',
+        'PLA-GF',
     ],
     'PETG系列': [
-        'PETG 基础 (Basic)',
-        'PETG 哑光 (Matte)',
-        'PETG 高流 (HF)',
-        'PETG-CF 碳纤',
-        'PETG-GF 玻纤',
+        'PETG Basic',
+        'PETG Matte',
+        'PETG Rapid',
+        'PETG HF',
+        'PETG-CF',
+        'PETG-GF',
     ],
     'ABS/ASA系列': [
-        'ABS 通用',
-        'ABS-CF 碳纤',
-        'ABS-GF 玻纤',
-        'ASA 耐候',
-        'ASA-CF 碳纤',
-        'ASA-GF 玻纤',
-        'ASA 航空 (Aero)',
+        'ABS',
+        'ABS-CF',
+        'ABS-GF',
+        'ASA',
+        'ASA-CF',
+        'ASA-GF',
+        'ASA Aero',
     ],
     '尼龙系列': [
-        'PA 尼龙',
-        'PA-CF 碳纤',
-        'PA-GF 玻纤',
-        'PA6-CF 碳纤',
-        'PAHT-CF 高温碳纤',
-        'PAHT-GF 高温玻纤',
+        'PA',
+        'PA-CF',
+        'PA-GF',
+        'PA6-CF',
+        'PAHT-CF',
+        'PAHT-GF',
     ],
     '工程塑料': [
-        'PC 聚碳酸酯',
-        'PC-CF 碳纤',
-        'POM 赛钢',
+        'PC',
+        'PC-CF',
+        'POM',
         'HIPS',
     ],
     '弹性材料': [
@@ -101,13 +102,13 @@ export const FILAMENT_TYPES = {
         'TPE',
     ],
     '支撑材料': [
-        'PVA 水溶',
-        'BVOH 水溶',
+        'PVA',
+        'BVOH',
     ],
     '特殊材料': [
         'PET',
-        'PET-CF 碳纤',
-        'PP 聚丙烯',
+        'PET-CF',
+        'PP',
         'PCTG',
     ],
 };
@@ -133,25 +134,42 @@ export const COMMON_COLORS = [
  * 颜色名称映射（用于 AI 识别）
  */
 export const COLOR_NAME_MAP: Record<string, string> = {
-    '黑': '#1a1a1a', '哑光黑': '#1a1a1a', '炭黑': '#2d2d2d',
-    '白': '#ffffff', '乳白': '#f5f5f4', '象牙白': '#fffef0',
-    '红': '#ef4444', '樱桃红': '#dc2626', '酒红': '#991b1b',
+    // 基础色
+    '黑': '#1a1a1a', '哑光黑': '#1a1a1a', '炭黑': '#2d2d2d', '柔性黑': '#1a1a1a',
+    '白': '#ffffff', '乳白': '#f5f5f4', '象牙白': '#fffef0', '珍珠白': '#faf8f5',
+    '红': '#ef4444', '樱桃红': '#dc2626', '酒红': '#991b1b', '暗夜红': '#7f1d1d',
     '橙': '#f97316', '橘': '#f97316',
-    '黄': '#eab308', '金黄': '#ca8a04',
-    '绿': '#22c55e', '翠绿': '#16a34a', '墨绿': '#166534',
-    '蓝': '#3b82f6', '天空蓝': '#06b6d4', '深蓝': '#1e40af',
-    '紫': '#8b5cf6', '薰衣草': '#a78bfa',
-    '粉': '#ec4899', '粉红': '#f472b6',
-    '灰': '#78716c', '银灰': '#a8a29e',
-    '透明': '#e5e5e5'
+    '黄': '#eab308', '金黄': '#ca8a04', '柠檬': '#fde047',
+    '绿': '#22c55e', '翠绿': '#16a34a', '墨绿': '#166534', '军绿': '#4d7c0f', '柠檬绿': '#84cc16', '荧光绿': '#bef264',
+    '蓝': '#3b82f6', '天空蓝': '#06b6d4', '天蓝': '#38bdf8', '深蓝': '#1e40af', '湖蓝': '#0891b2', '靛蓝': '#4338ca',
+    '紫': '#8b5cf6', '薰衣草': '#a78bfa', '龙紫': '#7c3aed', '变色龙': '#8b5cf6',
+    '粉': '#ec4899', '粉红': '#f472b6', '粉色': '#f472b6',
+    '灰': '#78716c', '银灰': '#a8a29e', '深灰': '#57534e',
+    // 特殊色
+    '透明': '#e5e5e5', '水晶': '#d1d5db',
+    '金': '#fbbf24', '金色': '#f59e0b', '99金': '#f59e0b', '黄金': '#eab308',
+    '银': '#d1d5db', '银色': '#9ca3af', '金属银': '#a1a1aa',
+    '肤': '#fdbf6f', '肤色': '#fdbf6f',
+    '棕': '#a16207', '棕色': '#92400e',
+    '薄荷': '#5eead4', '清凉薄荷': '#5eead4', '薄荷绿': '#34d399',
+    '荧光': '#facc15',
+    '彩虹': '#ec4899', '混色': '#8b5cf6',
+    // ECO/盲盒默认
+    'ECO': '#3b82f6', '盲盒': '#78716c',
 };
 
 /**
  * 根据颜色名称推断 HEX 值
+ * 优先使用传入的 HEX 值（如果有效）
  */
-export function inferColorHex(colorName: string): string {
+export function inferColorHex(colorInput: string): string {
+    // 如果输入已经是有效的 HEX 颜色，直接返回
+    if (colorInput && /^#[0-9A-Fa-f]{6}$/.test(colorInput)) {
+        return colorInput;
+    }
+    // 否则尝试从颜色名称映射
     for (const [key, value] of Object.entries(COLOR_NAME_MAP)) {
-        if (colorName.includes(key)) return value;
+        if (colorInput.includes(key)) return value;
     }
     return '#78716c'; // 默认灰色
 }

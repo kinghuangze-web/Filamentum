@@ -28,8 +28,8 @@ function PrinterIcon({ className = "" }: { className?: string }) {
 }
 
 export interface AppHeaderProps {
-    farmMode: boolean;
-    onToggleFarmMode: () => void;
+    dashboardOpen: boolean;
+    onToggleDashboard: () => void;
     onOpenSettings: () => void;
     onOpenAIHub: () => void;
     onOpenAddModal: () => void;
@@ -43,8 +43,8 @@ export interface AppHeaderProps {
 
 export const AppHeader = React.memo(function AppHeader(props: AppHeaderProps) {
     const {
-        farmMode,
-        onToggleFarmMode,
+        dashboardOpen,
+        onToggleDashboard,
         onOpenSettings,
         onOpenAIHub,
         onOpenAddModal,
@@ -67,13 +67,14 @@ export const AppHeader = React.memo(function AppHeader(props: AppHeaderProps) {
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-5">
                     {/* 左侧：品牌区域 */}
                     <div className="flex items-center gap-4">
-                        {/* 3D 打印机图标 (点击切换农场模式) */}
+                        {/* 3D 打印机图标 (点击切换仪表盘) */}
                         <div
                             className="relative group cursor-pointer"
-                            onClick={onToggleFarmMode}
+                            onClick={onToggleDashboard}
+                            title="耗材统计仪表盘"
                         >
-                            <div className={`absolute inset-0 bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl blur-md opacity-40 group-hover:opacity-60 transition-opacity ${farmMode ? 'from-indigo-400 to-purple-500' : ''}`} />
-                            <div className={`relative p-3 bg-gradient-to-br rounded-2xl shadow-lg shadow-orange-200/50 transition-colors ${farmMode ? 'from-indigo-500 to-purple-600' : 'from-amber-400 to-orange-500'}`}>
+                            <div className={`absolute inset-0 bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl blur-md opacity-40 group-hover:opacity-60 transition-opacity ${dashboardOpen ? 'from-indigo-400 to-purple-500' : ''}`} />
+                            <div className={`relative p-3 bg-gradient-to-br rounded-2xl shadow-lg shadow-orange-200/50 transition-colors ${dashboardOpen ? 'from-indigo-500 to-purple-600' : 'from-amber-400 to-orange-500'}`}>
                                 <PrinterIcon className="w-10 h-10 text-white" />
                             </div>
                         </div>

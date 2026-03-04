@@ -28,20 +28,33 @@ export function AIParseModal({ isOpen, onClose, onImport, onOpenSettings, config
     const [confidence, setConfidence] = useState(0);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
-    const isConfigured = config && config.enabled && config.vl?.apiKey && config.storageMode !== 'encrypted';
+    // 检查是否有可用的模型配置 (omni 或 llm 或 vl 任一有效即可)
+    const hasAnyModelConfigured = config && config.enabled && config.storageMode !== 'encrypted' &&
+        ((config.omni?.enabled && config.omni?.apiKey) ||
+            (config.llm?.enabled && config.llm?.apiKey) ||
+            (config.vl?.enabled && config.vl?.apiKey));
 
-    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
 
-        const reader = new FileReader();
-        reader.onloadend = async () => {
-            const base64 = reader.result as string;
-            // 压缩图片
-            const compressed = await compressImage(base64, 800, 0.7);
-            setImageBase64(compressed);
-        };
-        reader.readAsDataURL(file);
+        if (file.type.startsWith('image/')) {
+            // 图片处理
+            const reader = new FileReader();
+            reader.onloadend = async () => {
+                const base64 = reader.result as string;
+                const compressed = await compressImage(base64, 800, 0.7);
+                setImageBase64(compressed);
+            };
+            reader.readAsDataURL(file);
+        } else if (file.type === 'text/plain' || file.name.endsWith('.txt') || file.name.endsWith('.csv')) {
+            // 文本文件处理
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setInputText(reader.result as string);
+            };
+            reader.readAsText(file, 'utf-8');
+        }
     };
 
     const handleParse = async () => {
@@ -157,7 +170,7 @@ export function AIParseModal({ isOpen, onClose, onImport, onOpenSettings, config
                 {/* Content */}
                 <div className="p-8 overflow-y-auto flex-1 space-y-6">
                     {/* 未配置 API 提示 */}
-                    {!isConfigured && (
+                    {!hasAnyModelConfigured && (
                         <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 flex items-start gap-4">
                             <AlertCircle size={24} className="text-amber-600 flex-shrink-0" />
                             <div className="flex-1">
@@ -176,7 +189,7 @@ export function AIParseModal({ isOpen, onClose, onImport, onOpenSettings, config
                     )}
 
                     {/* 输入区域 */}
-                    {isConfigured && (
+                    {hasAnyModelConfigured && (
                         <>
                             {/* 图片上传 */}
                             <div>
@@ -207,8 +220,8 @@ export function AIParseModal({ isOpen, onClose, onImport, onOpenSettings, config
                                             ref={fileInputRef}
                                             type="file"
                                             className="hidden"
-                                            accept="image/*"
-                                            onChange={handleImageUpload}
+                                            accept="image/*,.txt,.csv"
+                                            onChange={handleFileUpload}
                                         />
                                     </label>
                                 )}

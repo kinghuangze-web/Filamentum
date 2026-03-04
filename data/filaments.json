@@ -1,17 +1,17 @@
 [
   {
-    "id": "5d7016c6-3cf9-47a8-9b08-10f84506561b",
-    "brand": "小北",
-    "type": "PETG 哑光 (Matte)",
-    "color": "#1a1a1a",
-    "colorName": "哑光黑",
+    "id": "1da958af-b1f9-475d-99c5-2eff327eb316",
+    "brand": "拓竹",
+    "type": "PLA Basic",
+    "color": "#dc2626",
+    "colorName": "红",
     "weight": 1000,
     "remaining": 1000,
-    "price": 89,
+    "price": 0,
     "tempMin": 190,
     "tempMax": 220,
     "flowRatio": 0.98,
-    "pressureAdvance": 0.04,
+    "pressureAdvance": 0.02,
     "defaultPlate": "textured",
     "bedSettings": {
       "cool_stabilized": {
@@ -35,27 +35,798 @@
         "other": 60
       }
     },
-    "notes": "",
-    "history": [
-      {
-        "id": "c796fb4d-8928-40e2-8d5a-d284ac894229",
-        "name": "3",
-        "weight": 159,
-        "date": "2026/1/29"
-      }
-    ],
-    "createdAt": "2026-01-29T10:24:03.438Z",
-    "updatedAt": "2026-01-29T13:11:53.119Z"
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
   },
   {
-    "id": "6fdbdaba-a7ca-4802-9743-382f4ceb8248",
-    "brand": "小北",
-    "type": "PETG 哑光 (Matte)",
-    "color": "#06b6d4",
-    "colorName": "哑光黑",
+    "id": "ffa1af3b-47e2-44cf-9f32-26b045f9c998",
+    "brand": "拓竹",
+    "type": "PLA Basic",
+    "color": "#78716c",
+    "colorName": "灰",
+    "weight": 50,
+    "remaining": 50,
+    "price": 0,
+    "tempMin": 190,
+    "tempMax": 220,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "25acec34-031f-47e0-a796-a56c24b783c7",
+    "brand": "Kexcelled",
+    "type": "PLA Basic",
+    "color": "#3b82f6",
+    "colorName": "蓝",
+    "weight": 2000,
+    "remaining": 2000,
+    "price": 0,
+    "tempMin": 190,
+    "tempMax": 220,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "33e51f20-4112-47ee-a69a-ab56e7b77345",
+    "brand": "Kexcelled",
+    "type": "PLA Basic",
+    "color": "#ef4444",
+    "colorName": "红",
+    "weight": 200,
+    "remaining": 200,
+    "price": 0,
+    "tempMin": 190,
+    "tempMax": 220,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "eb891bfd-adc8-421f-bbad-85a50d8d189e",
+    "brand": "海螺号",
+    "type": "PLA Basic",
+    "color": "#8b5cf6",
+    "colorName": "变色龙紫",
     "weight": 1000,
     "remaining": 1000,
-    "price": 28.29,
+    "price": 0,
+    "tempMin": 190,
+    "tempMax": 220,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "2fe3d0fd-ded2-4d7a-8d6a-76b3b0ae9cf4",
+    "brand": "海螺号",
+    "type": "PLA Basic",
+    "color": "#1a1a1a",
+    "colorName": "柔性黑",
+    "weight": 1000,
+    "remaining": 1000,
+    "price": 0,
+    "tempMin": 190,
+    "tempMax": 220,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "6fd77439-6d07-42d1-9616-58edd3bd5e47",
+    "brand": "瑞贝斯",
+    "type": "PLA Basic",
+    "color": "#a855f7",
+    "colorName": "紫色",
+    "weight": 200,
+    "remaining": 200,
+    "price": 0,
+    "tempMin": 190,
+    "tempMax": 220,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "dfee4a2d-63a3-4994-8d79-3f9a461d4f22",
+    "brand": "三绿",
+    "type": "PLA Basic",
+    "color": "#fdbf6f",
+    "colorName": "肤色",
+    "weight": 700,
+    "remaining": 700,
+    "price": 0,
+    "tempMin": 190,
+    "tempMax": 220,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "dd03abde-e7fa-45f6-af06-85514412bd6c",
+    "brand": "维籁",
+    "type": "PLA Matte",
+    "color": "#0891b2",
+    "colorName": "湖蓝色",
+    "weight": 700,
+    "remaining": 700,
+    "price": 0,
+    "tempMin": 190,
+    "tempMax": 220,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "aaa86a10-2d6c-44c0-bdab-cc093f4f2da6",
+    "brand": "eSun",
+    "type": "PLA Matte",
+    "color": "#1a1a1a",
+    "colorName": "黑色",
+    "weight": 1000,
+    "remaining": 1000,
+    "price": 0,
+    "tempMin": 190,
+    "tempMax": 220,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "777de742-eac4-409a-ae05-12c9dfcf14d5",
+    "brand": "eSun",
+    "type": "PLA Matte",
+    "color": "#ffffff",
+    "colorName": "白色",
+    "weight": 1000,
+    "remaining": 1000,
+    "price": 0,
+    "tempMin": 190,
+    "tempMax": 220,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "93b1e779-c671-4dac-8e6c-7a9093299049",
+    "brand": "eSun",
+    "type": "PLA Matte",
+    "color": "#6b7280",
+    "colorName": "灰色",
+    "weight": 1000,
+    "remaining": 1000,
+    "price": 0,
+    "tempMin": 190,
+    "tempMax": 220,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "aab7337f-28c6-4232-ae58-ebda613a3f31",
+    "brand": "Aliz",
+    "type": "PLA Matte",
+    "color": "#92400e",
+    "colorName": "棕色",
+    "weight": 1000,
+    "remaining": 1000,
+    "price": 0,
+    "tempMin": 190,
+    "tempMax": 220,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "2425727c-9d42-48d2-afe9-a007a931a066",
+    "brand": "海螺号",
+    "type": "PLA Silk",
+    "color": "#eab308",
+    "colorName": "黄金色",
+    "weight": 1000,
+    "remaining": 1000,
+    "price": 0,
+    "tempMin": 190,
+    "tempMax": 220,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "f815a2a5-7a2b-4130-9ebe-ac4bbfa5e119",
+    "brand": "三慈",
+    "type": "PLA Silk",
+    "color": "#f59e0b",
+    "colorName": "金色",
+    "weight": 50,
+    "remaining": 50,
+    "price": 0,
+    "tempMin": 190,
+    "tempMax": 220,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "4ae1d953-f387-4017-a4f3-2e1230525b20",
+    "brand": "维籁",
+    "type": "PLA Silk",
+    "color": "#f97316",
+    "colorName": "橙色",
+    "weight": 1000,
+    "remaining": 1000,
+    "price": 0,
+    "tempMin": 190,
+    "tempMax": 220,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "9bb05ea8-5c38-49a0-8e00-833d1e41f652",
+    "brand": "余兄弟",
+    "type": "PLA Silk",
+    "color": "#d1d5db",
+    "colorName": "银色",
+    "weight": 1000,
+    "remaining": 1000,
+    "price": 0,
+    "tempMin": 190,
+    "tempMax": 220,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "e541613b-b16f-42fc-b5d4-75337b3f4e29",
+    "brand": "维籁",
+    "type": "PLA Silk",
+    "color": "#faf8f5",
+    "colorName": "珍珠白色",
+    "weight": 1000,
+    "remaining": 1000,
+    "price": 0,
+    "tempMin": 190,
+    "tempMax": 220,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "76538913-6cf3-43ac-b5be-23bc189f1915",
+    "brand": "余兄弟",
+    "type": "PLA Silk",
+    "color": "#5eead4",
+    "colorName": "清凉薄荷",
+    "weight": 400,
+    "remaining": 400,
+    "price": 0,
+    "tempMin": 190,
+    "tempMax": 220,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "01b56a86-7753-444e-add4-a546b0f74950",
+    "brand": "海螺号",
+    "type": "PLA Silk",
+    "color": "#ca8a04",
+    "colorName": "99金色",
+    "weight": 200,
+    "remaining": 200,
+    "price": 0,
+    "tempMin": 190,
+    "tempMax": 220,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "a6ad4c6d-6cec-40b3-bfb2-35b779c4c0b6",
+    "brand": "R3D",
+    "type": "PETG Basic",
+    "color": "#1a1a1a",
+    "colorName": "黑色",
+    "weight": 750,
+    "remaining": 750,
+    "price": 0,
+    "tempMin": 230,
+    "tempMax": 260,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "47f6a1d2-0bd9-4a28-b954-fb883eb05e09",
+    "brand": "Kexcelled",
+    "type": "PETG Rapid",
+    "color": "#e5e5e5",
+    "colorName": "透明",
+    "weight": 1000,
+    "remaining": 1000,
+    "price": 0,
     "tempMin": 230,
     "tempMax": 260,
     "flowRatio": 0.98,
@@ -85,7 +856,1374 @@
     },
     "notes": "",
     "history": [],
-    "createdAt": "2026-01-29T10:24:03.439Z",
-    "updatedAt": "2026-01-29T13:11:59.514Z"
+    "createdAt": "2026-02-08T08:53:05.913Z",
+    "updatedAt": "2026-02-08T09:26:46.896Z"
+  },
+  {
+    "id": "95c90b1e-7135-4631-99b1-d227f2b408c7",
+    "brand": "R3D",
+    "type": "PETG Basic",
+    "color": "#bef264",
+    "colorName": "荧光绿",
+    "weight": 1000,
+    "remaining": 1000,
+    "price": 0,
+    "tempMin": 230,
+    "tempMax": 260,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "6b4907ed-9c80-450c-aff5-ab3cb17ca528",
+    "brand": "JAYO",
+    "type": "PETG Basic",
+    "color": "#fdbf6f",
+    "colorName": "肤色",
+    "weight": 1000,
+    "remaining": 1000,
+    "price": 0,
+    "tempMin": 230,
+    "tempMax": 260,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "101adebc-ba59-4076-b4ce-dbeda3b07999",
+    "brand": "三慈",
+    "type": "PETG Basic",
+    "color": "#ffffff",
+    "colorName": "白色",
+    "weight": 950,
+    "remaining": 950,
+    "price": 0,
+    "tempMin": 230,
+    "tempMax": 260,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "8d794b49-634d-4fd9-a22e-95c2c8dc5304",
+    "brand": "R3D",
+    "type": "PETG Basic",
+    "color": "#facc15",
+    "colorName": "黄色",
+    "weight": 1000,
+    "remaining": 1000,
+    "price": 0,
+    "tempMin": 230,
+    "tempMax": 260,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "f3b7ef52-5edb-4f97-b378-22bef48ba0e6",
+    "brand": "Kexcelled",
+    "type": "PETG Rapid",
+    "color": "#ffffff",
+    "colorName": "白色",
+    "weight": 1000,
+    "remaining": 1000,
+    "price": 0,
+    "tempMin": 230,
+    "tempMax": 260,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "8708701c-42de-4781-a2ab-b6c664fc9075",
+    "brand": "天瑞",
+    "type": "PETG 金属",
+    "color": "#9ca3af",
+    "colorName": "金属银",
+    "weight": 400,
+    "remaining": 400,
+    "price": 0,
+    "tempMin": 230,
+    "tempMax": 260,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "7ecd76c0-b05d-45f5-a004-cf8eb40cd308",
+    "brand": "天瑞",
+    "type": "PETG 金属",
+    "color": "#7f1d1d",
+    "colorName": "金属暗夜红",
+    "weight": 600,
+    "remaining": 600,
+    "price": 0,
+    "tempMin": 230,
+    "tempMax": 260,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "60bd2839-a394-411c-beec-bb7822ff4334",
+    "brand": "天瑞",
+    "type": "PETG ECO",
+    "color": "#3b82f6",
+    "colorName": "ECO蓝",
+    "weight": 1000,
+    "remaining": 1000,
+    "price": 0,
+    "tempMin": 230,
+    "tempMax": 260,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "b62df826-901c-4374-93dd-0448495fc464",
+    "brand": "余兄弟",
+    "type": "PETG Matte",
+    "color": "#ffffff",
+    "colorName": "白色",
+    "weight": 250,
+    "remaining": 250,
+    "price": 0,
+    "tempMin": 230,
+    "tempMax": 260,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "9902ef36-cdb2-4140-b87f-829f443fd00a",
+    "brand": "余兄弟",
+    "type": "PETG Matte",
+    "color": "#ffffff",
+    "colorName": "白色",
+    "weight": 1000,
+    "remaining": 1000,
+    "price": 0,
+    "tempMin": 230,
+    "tempMax": 260,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "fb40ae96-9198-429e-8cbd-4ff232f87c61",
+    "brand": "JAYO",
+    "type": "PETG Matte",
+    "color": "#ffffff",
+    "colorName": "白色",
+    "weight": 1000,
+    "remaining": 1000,
+    "price": 0,
+    "tempMin": 230,
+    "tempMax": 260,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "07531058-8e8a-4fad-a5b3-0ca9f7b1dac9",
+    "brand": "余兄弟",
+    "type": "PETG Matte",
+    "color": "#1a1a1a",
+    "colorName": "黑色",
+    "weight": 1000,
+    "remaining": 1000,
+    "price": 0,
+    "tempMin": 230,
+    "tempMax": 260,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "8ebdd071-6a19-4970-8c50-83b0220d159e",
+    "brand": "小北",
+    "type": "PETG Matte",
+    "color": "#1a1a1a",
+    "colorName": "黑色",
+    "weight": 1000,
+    "remaining": 1000,
+    "price": 0,
+    "tempMin": 230,
+    "tempMax": 260,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "488302b6-6522-4853-b3d4-35dac4e458cf",
+    "brand": "小北",
+    "type": "PETG Matte",
+    "color": "#facc15",
+    "colorName": "黄色",
+    "weight": 980,
+    "remaining": 980,
+    "price": 0,
+    "tempMin": 230,
+    "tempMax": 260,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "15cb2188-7ad9-4b93-97aa-7ecabfb7d457",
+    "brand": "小北",
+    "type": "PETG Matte",
+    "color": "#ef4444",
+    "colorName": "红色",
+    "weight": 500,
+    "remaining": 500,
+    "price": 0,
+    "tempMin": 230,
+    "tempMax": 260,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "d485f914-df13-4d80-a393-b2b47a163168",
+    "brand": "小北",
+    "type": "PETG Matte",
+    "color": "#f97316",
+    "colorName": "橙色",
+    "weight": 1000,
+    "remaining": 1000,
+    "price": 0,
+    "tempMin": 230,
+    "tempMax": 260,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "a56ffc63-70fb-4f2d-ad63-f9499c5f22bb",
+    "brand": "魔创",
+    "type": "PETG Matte",
+    "color": "#4b5563",
+    "colorName": "深灰色",
+    "weight": 1000,
+    "remaining": 1000,
+    "price": 0,
+    "tempMin": 230,
+    "tempMax": 260,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "b98c2171-2191-4827-9eee-5466b35e880c",
+    "brand": "魔创",
+    "type": "PETG Matte",
+    "color": "#4d7c0f",
+    "colorName": "军绿色",
+    "weight": 1000,
+    "remaining": 1000,
+    "price": 0,
+    "tempMin": 230,
+    "tempMax": 260,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "abe813ac-3447-4431-836e-67871714840d",
+    "brand": "小北",
+    "type": "PETG Matte",
+    "color": "#f472b6",
+    "colorName": "粉色",
+    "weight": 1000,
+    "remaining": 1000,
+    "price": 0,
+    "tempMin": 230,
+    "tempMax": 260,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "b98e1572-3ef1-495b-a171-f10485ac5716",
+    "brand": "小北",
+    "type": "PETG Matte",
+    "color": "#fdbf6f",
+    "colorName": "肤色",
+    "weight": 1000,
+    "remaining": 1000,
+    "price": 0,
+    "tempMin": 230,
+    "tempMax": 260,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "37db7c1f-ca84-45b1-9ca0-5c878cc5264a",
+    "brand": "Aliz",
+    "type": "PETG Matte",
+    "color": "#ef4444",
+    "colorName": "红色",
+    "weight": 1000,
+    "remaining": 1000,
+    "price": 0,
+    "tempMin": 230,
+    "tempMax": 260,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "2a54940e-76b0-4f9c-b9a2-de81921c6d54",
+    "brand": "Aliz",
+    "type": "PETG Matte",
+    "color": "#ffffff",
+    "colorName": "白色",
+    "weight": 1000,
+    "remaining": 1000,
+    "price": 0,
+    "tempMin": 230,
+    "tempMax": 260,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "d5c1fde0-3fad-4d94-9030-cf368b5bba29",
+    "brand": "Aliz",
+    "type": "PETG Matte",
+    "color": "#84cc16",
+    "colorName": "柠檬绿",
+    "weight": 1000,
+    "remaining": 1000,
+    "price": 0,
+    "tempMin": 230,
+    "tempMax": 260,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "767088d7-5e4b-476a-a105-bd60d88c941a",
+    "brand": "魔创",
+    "type": "PETG Matte",
+    "color": "#ffffff",
+    "colorName": "白色",
+    "weight": 1000,
+    "remaining": 1000,
+    "price": 0,
+    "tempMin": 230,
+    "tempMax": 260,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "076bacea-0055-42de-abcd-e365bdc81a4d",
+    "brand": "魔创",
+    "type": "PETG Matte",
+    "color": "#1a1a1a",
+    "colorName": "黑色",
+    "weight": 1000,
+    "remaining": 1000,
+    "price": 0,
+    "tempMin": 230,
+    "tempMax": 260,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "06e3d7ed-c325-4bf8-bf59-6ed2526d1c55",
+    "brand": "魔创",
+    "type": "PETG Matte",
+    "color": "#38bdf8",
+    "colorName": "天蓝色",
+    "weight": 1000,
+    "remaining": 1000,
+    "price": 0,
+    "tempMin": 230,
+    "tempMax": 260,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "d06ac0b7-9927-4d9c-bb9c-642af7413db0",
+    "brand": "魔创",
+    "type": "PETG Matte",
+    "color": "#f472b6",
+    "colorName": "粉色",
+    "weight": 1000,
+    "remaining": 1000,
+    "price": 0,
+    "tempMin": 230,
+    "tempMax": 260,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "eed28c8c-081c-4c2f-98f9-cb74f58898a8",
+    "brand": "Kexcelled",
+    "type": "PETG GF",
+    "color": "#1a1a1a",
+    "colorName": "黑色",
+    "weight": 800,
+    "remaining": 800,
+    "price": 0,
+    "tempMin": 230,
+    "tempMax": 260,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "12580da3-0509-4c85-9cba-ff56490b4acf",
+    "brand": "Kexcelled",
+    "type": "PETG GF",
+    "color": "#ffffff",
+    "colorName": "白色",
+    "weight": 2000,
+    "remaining": 2000,
+    "price": 0,
+    "tempMin": 230,
+    "tempMax": 260,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "2443c5b0-eefd-4e81-8112-3f137e49bfb6",
+    "brand": "Kexcelled",
+    "type": "PETG GF",
+    "color": "#3b82f6",
+    "colorName": "蓝色-夏日之歌",
+    "weight": 1000,
+    "remaining": 1000,
+    "price": 0,
+    "tempMin": 230,
+    "tempMax": 260,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "d2798f25-43f6-46d1-9b41-edd23dbd270e",
+    "brand": "天瑞",
+    "type": "PETG GF",
+    "color": "#78716c",
+    "colorName": "盲盒",
+    "weight": 1000,
+    "remaining": 1000,
+    "price": 0,
+    "tempMin": 230,
+    "tempMax": 260,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "0e3e53d1-5235-44b3-a23d-2714ea9a5113",
+    "brand": "魔创",
+    "type": "PETG CF",
+    "color": "#1a1a1a",
+    "colorName": "黑色",
+    "weight": 1000,
+    "remaining": 1000,
+    "price": 0,
+    "tempMin": 230,
+    "tempMax": 260,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "8c31444e-1740-45aa-86de-9b38ac3eaa90",
+    "brand": "魔创",
+    "type": "PETG CF",
+    "color": "#4338ca",
+    "colorName": "靛蓝色",
+    "weight": 1000,
+    "remaining": 1000,
+    "price": 0,
+    "tempMin": 230,
+    "tempMax": 260,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "faf8bddf-7a16-489f-9d0b-cf92859b9a6d",
+    "brand": "小北",
+    "type": "PETG 水晶",
+    "color": "#8b5cf6",
+    "colorName": "混色水晶盲盒",
+    "weight": 1000,
+    "remaining": 1000,
+    "price": 0,
+    "tempMin": 230,
+    "tempMax": 260,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.02,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "history": [],
+    "createdAt": "2026-02-08T08:53:05.913Z"
+  },
+  {
+    "id": "43568dea-d0df-4f4e-924f-3ae23a5a3109",
+    "brand": "kexcelled",
+    "type": "PETG Rapid",
+    "color": "#f97316",
+    "colorName": "橙色",
+    "weight": 1000,
+    "remaining": 1000,
+    "price": 28.5,
+    "tempMin": 190,
+    "tempMax": 220,
+    "flowRatio": 0.98,
+    "pressureAdvance": 0.04,
+    "defaultPlate": "textured",
+    "bedSettings": {
+      "cool_stabilized": {
+        "initial": 35,
+        "other": 35
+      },
+      "cool": {
+        "initial": 55,
+        "other": 50
+      },
+      "engineering": {
+        "initial": 90,
+        "other": 90
+      },
+      "smooth_high_temp": {
+        "initial": 65,
+        "other": 60
+      },
+      "textured": {
+        "initial": 65,
+        "other": 60
+      }
+    },
+    "notes": "",
+    "history": [],
+    "createdAt": "2026-02-09T05:38:16.258Z",
+    "updatedAt": "2026-02-09T05:38:16.258Z"
   }
 ]

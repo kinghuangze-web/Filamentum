@@ -127,7 +127,7 @@ export interface FilamentPreset {
  * 模型配置
  */
 export interface ModelConfig {
-    provider: 'custom' | 'qwen' | 'deepseek' | 'openai';
+    provider: 'custom' | 'qwen' | 'deepseek' | 'openai' | 'glm' | 'kimi' | 'doubao' | 'hunyuan' | 'spark' | 'gemini' | 'claude';
     apiKey: string;
     baseUrl: string;
     model: string;

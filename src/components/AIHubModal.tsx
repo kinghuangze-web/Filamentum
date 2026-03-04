@@ -12,6 +12,77 @@ import { Filament, AIConfig, ModelConfig } from '../lib/types';
 import { parseFilamentInfo, ParsedFilament, chatWithAssistant, saveAIConfig, unlockAIConfig, PROVIDER_PRESETS } from '../lib/ai-service';
 import { DEFAULT_BED_SETTINGS, inferColorHex, inferTemperature, compressImage } from '../lib/constants';
 
+// 预设耗材数据 (人工校对版 2024-02-08 V2)
+const PRESET_FILAMENTS: ParsedFilament[] = [
+    // PLA basic
+    { brand: '拓竹', type: 'PLA Basic', colorName: '红', color: '#dc2626', weight: 1000, price: 0, quantity: 1 },
+    { brand: '拓竹', type: 'PLA Basic', colorName: '灰', color: '#78716c', weight: 50, price: 0, quantity: 1 }, // 200g快用完 -> 50g
+    { brand: 'Kexcelled', type: 'PLA Basic', colorName: '蓝', color: '#3b82f6', weight: 2000, price: 0, quantity: 1 },
+    { brand: 'Kexcelled', type: 'PLA Basic', colorName: '红', color: '#ef4444', weight: 200, price: 0, quantity: 1 },
+    { brand: '海螺号', type: 'PLA Basic', colorName: '变色龙紫', color: '#8b5cf6', weight: 1000, price: 0, quantity: 1 },
+    { brand: '海螺号', type: 'PLA Basic', colorName: '柔性黑', color: '#1a1a1a', weight: 1000, price: 0, quantity: 1 },
+    { brand: '瑞贝斯', type: 'PLA Basic', colorName: '紫色', color: '#a855f7', weight: 200, price: 0, quantity: 1 },
+    { brand: '三绿', type: 'PLA Basic', colorName: '肤色', color: '#fdbf6f', weight: 700, price: 0, quantity: 1 },
+    // PLA matte
+    { brand: '维籁', type: 'PLA Matte', colorName: '湖蓝色', color: '#0891b2', weight: 700, price: 0, quantity: 1 },
+    { brand: 'eSun', type: 'PLA Matte', colorName: '黑色', color: '#1a1a1a', weight: 1000, price: 0, quantity: 1 },
+    { brand: 'eSun', type: 'PLA Matte', colorName: '白色', color: '#ffffff', weight: 1000, price: 0, quantity: 1 },
+    { brand: 'eSun', type: 'PLA Matte', colorName: '灰色', color: '#6b7280', weight: 1000, price: 0, quantity: 1 },
+    { brand: 'Aliz', type: 'PLA Matte', colorName: '棕色', color: '#92400e', weight: 1000, price: 0, quantity: 1 },
+    // PLA silk
+    { brand: '海螺号', type: 'PLA Silk', colorName: '黄金色', color: '#eab308', weight: 1000, price: 0, quantity: 1 },
+    { brand: '三慈', type: 'PLA Silk', colorName: '金色', color: '#f59e0b', weight: 50, price: 0, quantity: 1 }, // 300g快用完 -> 50g
+    { brand: '维籁', type: 'PLA Silk', colorName: '橙色', color: '#f97316', weight: 1000, price: 0, quantity: 1 },
+    { brand: '余兄弟', type: 'PLA Silk', colorName: '银色', color: '#d1d5db', weight: 1000, price: 0, quantity: 1 },
+    { brand: '维籁', type: 'PLA Silk', colorName: '珍珠白色', color: '#faf8f5', weight: 1000, price: 0, quantity: 1 },
+    { brand: '余兄弟', type: 'PLA Silk', colorName: '清凉薄荷', color: '#5eead4', weight: 400, price: 0, quantity: 1 },
+    { brand: '海螺号', type: 'PLA Silk', colorName: '99金色', color: '#ca8a04', weight: 200, price: 0, quantity: 1 },
+    // PETG basic
+    { brand: 'R3D', type: 'PETG Basic', colorName: '黑色', color: '#1a1a1a', weight: 750, price: 0, quantity: 1 }, // 还有4/3 -> 3/4 -> 750g
+    { brand: 'Kexcelled', type: 'PETG Basic', colorName: '透明', color: '#e5e5e5', weight: 1000, price: 0, quantity: 1 },
+    { brand: 'R3D', type: 'PETG Basic', colorName: '荧光绿', color: '#bef264', weight: 1000, price: 0, quantity: 1 },
+    { brand: 'JAYO', type: 'PETG Basic', colorName: '肤色', color: '#fdbf6f', weight: 1000, price: 0, quantity: 1 },
+    { brand: '三慈', type: 'PETG Basic', colorName: '白色', color: '#ffffff', weight: 950, price: 0, quantity: 1 },
+    { brand: 'R3D', type: 'PETG Basic', colorName: '黄色', color: '#facc15', weight: 1000, price: 0, quantity: 1 },
+    // PETG rapid
+    { brand: 'Kexcelled', type: 'PETG Rapid', colorName: '白色', color: '#ffffff', weight: 1000, price: 0, quantity: 1 },
+    // PETG 金属
+    { brand: '天瑞', type: 'PETG 金属', colorName: '金属银', color: '#9ca3af', weight: 400, price: 0, quantity: 1 },
+    { brand: '天瑞', type: 'PETG 金属', colorName: '金属暗夜红', color: '#7f1d1d', weight: 600, price: 0, quantity: 1 },
+    // PETG ECO
+    { brand: '天瑞', type: 'PETG ECO', colorName: 'ECO蓝', color: '#3b82f6', weight: 1000, price: 0, quantity: 1 },
+    // PETG matte
+    { brand: '余兄弟', type: 'PETG Matte', colorName: '白色', color: '#ffffff', weight: 250, price: 0, quantity: 1 },
+    { brand: '余兄弟', type: 'PETG Matte', colorName: '白色', color: '#ffffff', weight: 1000, price: 0, quantity: 1 },
+    { brand: 'JAYO', type: 'PETG Matte', colorName: '白色', color: '#ffffff', weight: 1000, price: 0, quantity: 1 },
+    { brand: '余兄弟', type: 'PETG Matte', colorName: '黑色', color: '#1a1a1a', weight: 1000, price: 0, quantity: 1 }, // 1卷即将用完 -> 200g
+    { brand: '小北', type: 'PETG Matte', colorName: '黑色', color: '#1a1a1a', weight: 1000, price: 0, quantity: 1 },
+    { brand: '小北', type: 'PETG Matte', colorName: '黄色', color: '#facc15', weight: 980, price: 0, quantity: 1 },
+    { brand: '小北', type: 'PETG Matte', colorName: '红色', color: '#ef4444', weight: 500, price: 0, quantity: 1 },
+    { brand: '小北', type: 'PETG Matte', colorName: '橙色', color: '#f97316', weight: 1000, price: 0, quantity: 1 },
+    { brand: '魔创', type: 'PETG Matte', colorName: '深灰色', color: '#4b5563', weight: 1000, price: 0, quantity: 1 },
+    { brand: '魔创', type: 'PETG Matte', colorName: '军绿色', color: '#4d7c0f', weight: 1000, price: 0, quantity: 1 },
+    { brand: '小北', type: 'PETG Matte', colorName: '粉色', color: '#f472b6', weight: 1000, price: 0, quantity: 1 },
+    { brand: '小北', type: 'PETG Matte', colorName: '肤色', color: '#fdbf6f', weight: 1000, price: 0, quantity: 1 },
+    { brand: 'Aliz', type: 'PETG Matte', colorName: '红色', color: '#ef4444', weight: 1000, price: 0, quantity: 1 },
+    { brand: 'Aliz', type: 'PETG Matte', colorName: '白色', color: '#ffffff', weight: 1000, price: 0, quantity: 1 },
+    { brand: 'Aliz', type: 'PETG Matte', colorName: '柠檬绿', color: '#84cc16', weight: 1000, price: 0, quantity: 1 },
+    { brand: '魔创', type: 'PETG Matte', colorName: '白色', color: '#ffffff', weight: 1000, price: 0, quantity: 1 },
+    { brand: '魔创', type: 'PETG Matte', colorName: '黑色', color: '#1a1a1a', weight: 1000, price: 0, quantity: 1 },
+    { brand: '魔创', type: 'PETG Matte', colorName: '天蓝色', color: '#38bdf8', weight: 1000, price: 0, quantity: 1 },
+    { brand: '魔创', type: 'PETG Matte', colorName: '粉色', color: '#f472b6', weight: 1000, price: 0, quantity: 1 },
+    // PETG GF
+    { brand: 'Kexcelled', type: 'PETG GF', colorName: '黑色', color: '#1a1a1a', weight: 800, price: 0, quantity: 1 },
+    { brand: 'Kexcelled', type: 'PETG GF', colorName: '白色', color: '#ffffff', weight: 2000, price: 0, quantity: 1 },
+    { brand: 'Kexcelled', type: 'PETG GF', colorName: '蓝色-夏日之歌', color: '#3b82f6', weight: 1000, price: 0, quantity: 1 },
+    { brand: '天瑞', type: 'PETG GF', colorName: '盲盒', color: '#78716c', weight: 1000, price: 0, quantity: 1 },
+    // PETG CF
+    { brand: '魔创', type: 'PETG CF', colorName: '黑色', color: '#1a1a1a', weight: 1000, price: 0, quantity: 1 },
+    { brand: '魔创', type: 'PETG CF', colorName: '靛蓝色', color: '#4338ca', weight: 1000, price: 0, quantity: 1 },
+    // PETG 水晶
+    { brand: '小北', type: 'PETG 水晶', colorName: '混色水晶盲盒', color: '#8b5cf6', weight: 1000, price: 0, quantity: 1 },
+];
+
 interface AIHubModalProps {
     isOpen: boolean;
     onClose: () => void;
@@ -64,6 +135,8 @@ export function AIHubModal({ isOpen, onClose, onImportFilaments, config, onConfi
 
     // --- Vision State (选择性入库) ---
     const [selectedVisionIndices, setSelectedVisionIndices] = useState<Set<number>>(new Set());
+    // 输入模式: 'text' = 纯文本(用LLM), 'image' = 图片(用VL)
+    const [inputMode, setInputMode] = useState<'text' | 'image'>('text');
 
     // --- Config State ---
     const [localConfig, setLocalConfig] = useState<AIConfig | null>(null);
@@ -72,6 +145,23 @@ export function AIHubModal({ isOpen, onClose, onImportFilaments, config, onConfi
     const [unlockPwd, setUnlockPwd] = useState('');
     const [configMsg, setConfigMsg] = useState<{ type: 'success' | 'error', text: string } | null>(null);
     const [subTab, setSubTab] = useState<'vl' | 'llm' | 'omni' | 'security'>('omni'); // 默认显示 omni
+
+    // 检查库存重复
+    const checkStock = (item: ParsedFilament) => {
+        const normalize = (s: string) => s?.toLowerCase().trim().replace(/[\s-_]/g, '') || '';
+        const targetBrand = normalize(item.brand);
+        const targetType = normalize(item.type);
+        const targetColor = normalize(item.colorName);
+
+        const matches = filaments.filter(f => {
+            const b = normalize(f.brand);
+            const t = normalize(f.type);
+            const c = normalize(f.colorName);
+            return b === targetBrand && t === targetType && c === targetColor;
+        });
+
+        return { count: matches.length, exists: matches.length > 0 };
+    };
 
     // Default Config
     const DEFAULT_CONFIG: AIConfig = {
@@ -106,26 +196,50 @@ export function AIHubModal({ isOpen, onClose, onImportFilaments, config, onConfi
     if (!isOpen) return null;
 
     // --- Vision Handlers ---
-    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
-        const reader = new FileReader();
-        reader.onloadend = async () => {
-            const compressed = await compressImage(reader.result as string, 800, 0.7);
-            setVisionImage(compressed);
-        };
-        reader.readAsDataURL(file);
+
+        if (file.type.startsWith('image/')) {
+            // 图片处理
+            const reader = new FileReader();
+            reader.onloadend = async () => {
+                const compressed = await compressImage(reader.result as string, 800, 0.7);
+                setVisionImage(compressed);
+            };
+            reader.readAsDataURL(file);
+        } else if (file.type === 'text/plain' || file.name.endsWith('.txt') || file.name.endsWith('.csv')) {
+            // 文本文件处理
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setVisionInput(reader.result as string);
+            };
+            reader.readAsText(file, 'utf-8');
+        }
     };
 
     const handleVisionParse = async () => {
         if (!localConfig?.enabled || isLocked) { setVisionError('请先在"配置中心"解锁并启用 AI'); return; }
-        if (!visionInput && !visionImage) return;
+
+        // 根据输入模式决定是否使用图片
+        const useImage = inputMode === 'image';
+        const textInput = visionInput;
+        const imageInput = useImage ? visionImage : undefined;
+
+        if (useImage && !visionImage) {
+            setVisionError('请先上传图片');
+            return;
+        }
+        if (!useImage && !textInput) {
+            setVisionError('请输入文本内容');
+            return;
+        }
 
         setVisionLoading(true);
         setVisionError(null);
         setVisionResults([]);
 
-        const res = await parseFilamentInfo(localConfig, visionInput, visionImage || undefined);
+        const res = await parseFilamentInfo(localConfig, textInput, imageInput || undefined);
         setVisionLoading(false);
 
         if (res.error) setVisionError(res.error);
@@ -143,7 +257,10 @@ export function AIHubModal({ isOpen, onClose, onImportFilaments, config, onConfi
             if (!selectedVisionIndices.has(idx)) return; // 跳过未选中的
 
             const temp = inferTemperature(item.type);
-            const colorHex = inferColorHex(item.color || item.colorName || '');
+            // 优先使用 AI 返回的 HEX 颜色，否则从颜色名称推断
+            const colorHex = inferColorHex(item.color) !== '#78716c'
+                ? inferColorHex(item.color)
+                : inferColorHex(item.colorName || '');
             const baseItem: Filament = {
                 id: '',
                 brand: item.brand, type: item.type, color: colorHex, colorName: item.colorName || '未知',
@@ -410,36 +527,124 @@ export function AIHubModal({ isOpen, onClose, onImportFilaments, config, onConfi
                     {activeTab === 'vision' && (
                         <div className="flex-1 overflow-y-auto p-6 md:p-10 space-y-6">
                             <h2 className="text-2xl font-bold text-stone-800 mb-2">智能入库</h2>
-                            <p className="text-stone-500 text-sm mb-6">上传购物截图，或直接粘贴 Excel/Word 表格、订单文本，AI 自动提取参数。</p>
+                            <p className="text-stone-500 text-sm mb-4">选择输入方式，AI 自动提取耗材参数。</p>
 
                             {!localConfig?.enabled && (
                                 <div className="p-4 bg-amber-50 text-amber-600 rounded-xl text-sm mb-4">功能未启用，请前往配置中心开启。</div>
                             )}
 
+                            {/* 输入模式切换 */}
+                            <div className="flex gap-2 p-1 bg-stone-100 rounded-xl w-fit">
+                                <button
+                                    onClick={() => setInputMode('text')}
+                                    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all ${inputMode === 'text' ? 'bg-white shadow text-violet-600' : 'text-stone-500 hover:text-stone-700'}`}
+                                >
+                                    <FileText size={16} />
+                                    文本识别
+                                </button>
+                                <button
+                                    onClick={() => setInputMode('image')}
+                                    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all ${inputMode === 'image' ? 'bg-white shadow text-violet-600' : 'text-stone-500 hover:text-stone-700'}`}
+                                >
+                                    <ImageIcon size={16} />
+                                    图片识别
+                                </button>
+                            </div>
+
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 <div className="space-y-4">
-                                    {visionImage ? (
-                                        <div className="border-2 border-dashed rounded-2xl h-48 border-violet-500 bg-violet-50/10 relative">
-                                            <Image src={visionImage} alt="Uploaded" fill className="object-contain rounded-xl p-2" unoptimized />
-                                            <button onClick={() => setVisionImage(null)} className="absolute top-4 right-4 bg-white p-2 rounded-full shadow hover:text-rose-500 z-10"><Trash2 size={16} /></button>
-                                        </div>
-                                    ) : (
-                                        <label className="border-2 border-dashed rounded-2xl h-48 flex flex-col items-center justify-center transition-colors border-stone-200 hover:border-violet-400 hover:bg-stone-50 cursor-pointer">
-                                            <Upload size={32} className="mb-2 text-stone-400" />
-                                            <span className="text-sm font-bold text-stone-400">点击或拖拽上传图片</span>
-                                            <input type="file" className="hidden" accept="image/*" onChange={handleImageUpload} />
-                                        </label>
+                                    {/* 文本输入模式 */}
+                                    {inputMode === 'text' && (
+                                        <>
+                                            <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-3 text-sm text-emerald-700">
+                                                <span className="font-bold">✅ 使用语言模型 (LLM/Omni)</span> - 无需视觉模型
+                                            </div>
+                                            <label className="border-2 border-dashed rounded-2xl p-4 flex flex-col items-center justify-center transition-colors border-stone-200 hover:border-emerald-400 hover:bg-stone-50 cursor-pointer">
+                                                <Upload size={24} className="mb-2 text-stone-400" />
+                                                <span className="text-sm font-bold text-stone-400">点击上传 .txt / .csv 文件</span>
+                                                <span className="text-xs text-stone-300 mt-1">或在下方文本框直接粘贴</span>
+                                                <input type="file" className="hidden" accept=".txt,.csv" onChange={(e) => {
+                                                    const file = e.target.files?.[0];
+                                                    if (!file) return;
+                                                    const reader = new FileReader();
+                                                    reader.onloadend = () => setVisionInput(reader.result as string);
+                                                    reader.readAsText(file, 'utf-8');
+                                                }} />
+                                            </label>
+
+                                            {/* 预设导入按钮 */}
+                                            <div className="flex gap-2">
+                                                <button
+                                                    onClick={() => setVisionInput(PRESET_FILAMENTS.map(f => `${f.type} ${f.colorName} ${f.brand} ${f.weight}g`).join('\n'))}
+                                                    className="flex-1 bg-violet-50 text-violet-600 px-3 py-2 rounded-xl text-xs font-bold hover:bg-violet-100 transition-colors border border-violet-100 flex items-center justify-center gap-1.5"
+                                                    title="加载耗材.txt中的所有数据"
+                                                >
+                                                    <Box size={14} />
+                                                    加载"耗材.txt"全文
+                                                </button>
+                                                <button
+                                                    onClick={() => {
+                                                        const newSelected = new Set(PRESET_FILAMENTS.map((_, i) => i));
+                                                        setVisionResults(PRESET_FILAMENTS);
+                                                        setSelectedVisionIndices(newSelected);
+                                                        // 切换到结果视图
+                                                        // 这里不需要做任何事，因为 visionResults 有值就会显示结果区域
+                                                    }}
+                                                    className="flex-[2] bg-gradient-to-r from-violet-600 to-purple-600 text-white px-3 py-2 rounded-xl text-xs font-bold hover:shadow-lg hover:shadow-violet-200 transition-all flex items-center justify-center gap-1.5"
+                                                >
+                                                    <Sparkles size={14} />
+                                                    一键智能录入 (人工校对版)
+                                                </button>
+                                            </div>
+                                            <textarea
+                                                className="w-full p-4 bg-stone-50 rounded-2xl border border-stone-200 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none resize-none h-40"
+                                                placeholder="粘贴 Excel 表格、订单文本、商品描述...例如：\nPLA Basic 白色 1kg 拓竹\nPETG 哑光黑 500g eSUN"
+                                                value={visionInput}
+                                                onChange={e => setVisionInput(e.target.value)}
+                                            />
+                                        </>
                                     )}
-                                    <textarea
-                                        className="w-full p-4 bg-stone-50 rounded-2xl border-stone-100 text-sm focus:ring-2 focus:ring-violet-500 outline-none resize-none h-32"
-                                        placeholder="或在此粘贴 Excel 表格、商品描述文本..."
-                                        value={visionInput}
-                                        onChange={e => setVisionInput(e.target.value)}
-                                    />
+
+                                    {/* 图片输入模式 */}
+                                    {inputMode === 'image' && (
+                                        <>
+                                            <div className="bg-violet-50 border border-violet-200 rounded-xl p-3 text-sm text-violet-700">
+                                                <span className="font-bold">👁️ 使用视觉模型 (VL/Omni)</span> - 需配置视觉模型 API
+                                            </div>
+                                            {visionImage ? (
+                                                <div className="border-2 border-dashed rounded-2xl h-48 border-violet-500 bg-violet-50/10 relative">
+                                                    <Image src={visionImage} alt="Uploaded" fill className="object-contain rounded-xl p-2" unoptimized />
+                                                    <button onClick={() => setVisionImage(null)} className="absolute top-4 right-4 bg-white p-2 rounded-full shadow hover:text-rose-500 z-10"><Trash2 size={16} /></button>
+                                                </div>
+                                            ) : (
+                                                <label className="border-2 border-dashed rounded-2xl h-48 flex flex-col items-center justify-center transition-colors border-stone-200 hover:border-violet-400 hover:bg-stone-50 cursor-pointer">
+                                                    <Upload size={32} className="mb-2 text-stone-400" />
+                                                    <span className="text-sm font-bold text-stone-400">点击上传购物截图</span>
+                                                    <input type="file" className="hidden" accept="image/*" onChange={async (e) => {
+                                                        const file = e.target.files?.[0];
+                                                        if (!file) return;
+                                                        const reader = new FileReader();
+                                                        reader.onloadend = async () => {
+                                                            const compressed = await compressImage(reader.result as string, 800, 0.7);
+                                                            setVisionImage(compressed);
+                                                        };
+                                                        reader.readAsDataURL(file);
+                                                    }} />
+                                                </label>
+                                            )}
+                                            <textarea
+                                                className="w-full p-4 bg-stone-50 rounded-2xl border border-stone-200 text-sm focus:ring-2 focus:ring-violet-500 outline-none resize-none h-20"
+                                                placeholder="可选：补充描述信息..."
+                                                value={visionInput}
+                                                onChange={e => setVisionInput(e.target.value)}
+                                            />
+                                        </>
+                                    )}
+
                                     <button
                                         onClick={handleVisionParse}
-                                        disabled={visionLoading || (!visionInput && !visionImage)}
-                                        className="w-full py-3 bg-violet-600 text-white font-bold rounded-xl hover:bg-violet-700 transition-colors disabled:opacity-50 flex justify-center items-center gap-2"
+                                        disabled={visionLoading || (inputMode === 'text' ? !visionInput : !visionImage)}
+                                        className={`w-full py-3 text-white font-bold rounded-xl transition-colors disabled:opacity-50 flex justify-center items-center gap-2 ${inputMode === 'text' ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-violet-600 hover:bg-violet-700'}`}
                                     >
                                         {visionLoading ? <Loader2 className="animate-spin" /> : <Sparkles size={18} />}
                                         开始识别
@@ -470,41 +675,55 @@ export function AIHubModal({ isOpen, onClose, onImportFilaments, config, onConfi
                                         <div className="text-center text-stone-300 py-20">暂无结果</div>
                                     ) : (
                                         <div className="space-y-3">
-                                            {visionResults.map((item, idx) => (
-                                                <div
-                                                    key={idx}
-                                                    onClick={() => {
-                                                        const newSelected = new Set(selectedVisionIndices);
-                                                        if (newSelected.has(idx)) {
-                                                            newSelected.delete(idx);
-                                                        } else {
-                                                            newSelected.add(idx);
-                                                        }
-                                                        setSelectedVisionIndices(newSelected);
-                                                    }}
-                                                    className={`bg-white p-4 rounded-xl shadow-sm border cursor-pointer transition-all ${selectedVisionIndices.has(idx) ? 'border-violet-500 ring-2 ring-violet-100' : 'border-stone-100 hover:border-violet-300'
-                                                        }`}
-                                                >
-                                                    <div className="flex items-center justify-between px-4 py-3">
-                                                        <div className="flex items-center gap-3">
-                                                            <input
-                                                                type="checkbox"
-                                                                checked={selectedVisionIndices.has(idx)}
-                                                                onChange={() => { }}
-                                                                className="w-4 h-4 text-violet-600 rounded"
-                                                            />
-                                                            <div>
-                                                                <div className="font-bold text-stone-800">{item.brand} {item.type}</div>
-                                                                <div className="text-xs text-stone-500">{item.colorName} · {item.weight}g</div>
+                                            {visionResults.map((item, idx) => {
+                                                const stockStatus = checkStock(item);
+                                                return (
+                                                    <div
+                                                        key={idx}
+                                                        onClick={() => {
+                                                            const newSelected = new Set(selectedVisionIndices);
+                                                            if (newSelected.has(idx)) {
+                                                                newSelected.delete(idx);
+                                                            } else {
+                                                                newSelected.add(idx);
+                                                            }
+                                                            setSelectedVisionIndices(newSelected);
+                                                        }}
+                                                        className={`bg-white p-4 rounded-xl shadow-sm border cursor-pointer transition-all ${selectedVisionIndices.has(idx) ? 'border-violet-500 ring-2 ring-violet-100' : 'border-stone-100 hover:border-violet-300'
+                                                            }`}
+                                                    >
+                                                        <div className="flex items-center justify-between px-4 py-3">
+                                                            <div className="flex items-center gap-3">
+                                                                <input
+                                                                    type="checkbox"
+                                                                    checked={selectedVisionIndices.has(idx)}
+                                                                    onChange={() => { }}
+                                                                    className="w-4 h-4 text-violet-600 rounded"
+                                                                />
+                                                                <div>
+                                                                    <div className="font-bold text-stone-800 flex items-center gap-2">
+                                                                        {item.brand} {item.type}
+                                                                        {stockStatus.exists ? (
+                                                                            <span className="bg-stone-100 text-stone-500 text-[10px] px-1.5 py-0.5 rounded border border-stone-200 whitespace-nowrap">
+                                                                                库存:{stockStatus.count}
+                                                                            </span>
+                                                                        ) : (
+                                                                            <span className="bg-emerald-100 text-emerald-600 text-[10px] px-1.5 py-0.5 rounded border border-emerald-200 font-bold whitespace-nowrap">
+                                                                                NEW
+                                                                            </span>
+                                                                        )}
+                                                                    </div>
+                                                                    <div className="text-xs text-stone-500">{item.colorName} · {item.weight}g</div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="flex items-center gap-2">
+                                                                <div className="w-6 h-6 rounded-full border border-stone-200" style={{ backgroundColor: inferColorHex(item.color || item.colorName) }} />
+                                                                {item.quantity > 1 && <span className="bg-violet-100 text-violet-700 text-xs px-2 py-1 rounded-full">x{item.quantity}</span>}
                                                             </div>
                                                         </div>
-                                                        <div className="flex items-center gap-2">
-                                                            <div className="w-6 h-6 rounded-full border border-stone-200" style={{ backgroundColor: inferColorHex(item.color || item.colorName) }} />
-                                                            {item.quantity > 1 && <span className="bg-violet-100 text-violet-700 text-xs px-2 py-1 rounded-full">x{item.quantity}</span>}
-                                                        </div>
                                                     </div>
-                                                </div>
-                                            ))}
+                                                );
+                                            })}
                                             <button
                                                 onClick={handleImport}
                                                 disabled={selectedVisionIndices.size === 0}
@@ -707,7 +926,7 @@ export function AIHubModal({ isOpen, onClose, onImportFilaments, config, onConfi
                                                     快速配置预设
                                                 </div>
                                                 <div className="flex flex-wrap gap-2">
-                                                    {(['deepseek', 'qwen', 'openai'] as const).map(p => (
+                                                    {(Object.keys(PROVIDER_PRESETS) as Array<keyof typeof PROVIDER_PRESETS>).map(p => (
                                                         <button
                                                             key={p}
                                                             onClick={() => {
@@ -719,18 +938,10 @@ export function AIHubModal({ isOpen, onClose, onImportFilaments, config, onConfi
                                                                 : 'bg-white border-stone-200 text-stone-600 hover:border-stone-300 hover:bg-stone-100'
                                                                 }`}
                                                         >
-                                                            {p === 'deepseek' && 'DeepSeek (深度求索)'}
-                                                            {p === 'qwen' && 'Qwen (通义千问)'}
-                                                            {p === 'openai' && 'OpenAI (GPT-4)'}
+                                                            {PROVIDER_PRESETS[p].label}
                                                             {localConfig[subTab].provider === p && <Check size={14} />}
                                                         </button>
                                                     ))}
-                                                    <button
-                                                        onClick={() => updateModel(subTab, { provider: 'custom' })}
-                                                        className={`px-3 py-2 rounded-lg text-sm font-bold border ${localConfig[subTab].provider === 'custom' ? 'bg-stone-800 text-white' : 'bg-white border-stone-200'}`}
-                                                    >
-                                                        自定义
-                                                    </button>
                                                 </div>
                                                 <div className="mt-3 text-xs text-stone-400">
                                                     {subTab === 'vl' ? '推荐使用 Qwen-VL-Max 或 GPT-4o 进行图片识别。' : '推荐使用 DeepSeek-V3 或 GPT-4o 进行对话。'}
@@ -905,7 +1116,7 @@ export function AIHubModal({ isOpen, onClose, onImportFilaments, config, onConfi
 
                     )}
                 </div>
-            </div>
-        </div>
+            </div >
+        </div >
     );
 }
